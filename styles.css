@@ -61,10 +61,15 @@ body {
   align-items: center;
 }
 .spaces {
-  border: 2px solid black;
+  border: 1px solid black;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+}
+@media (0px < width < 1080px) {
+  body{
+    font-size: xx-small;
+  }
 }
