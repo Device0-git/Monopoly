@@ -1,6 +1,6 @@
 :root {
   --dark-mode: black;
-  --space-height: 9%;
+  --space-height: 13%;
   --spacing-style: space-around;
 }
 
@@ -28,27 +28,21 @@ body {
   height: var(--space-height);
   top: calc(100% - var(--space-height));
   display: flex;
-  flex-flow: row-reverse nowrap;
-  justify-content: var(--spacing-style);
-  align-items: center;
+  flex-direction: row-reverse;
 }
 .top {
   position: absolute;
   width: 100%;
   height: var(--space-height);
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: var(--spacing-style);
-  align-items: center;
+  flex-direction: row;
 }
 .left {
   position: absolute;
   height: 100%;
   width: var(--space-height);
   display: flex;
-  flex-flow: column-reverse nowrap;
-  justify-content: var(--spacing-style);
-  align-items: center;
+  flex-direction: column-reverse;
 }
 .right {
   position: absolute;
@@ -56,9 +50,7 @@ body {
   width: var(--space-height);
   left: calc(100% - var(--space-height));
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: var(--spacing-style);
-  align-items: center;
+  flex-direction: column;
 }
 .spaces {
   border: 1px solid black;
@@ -67,9 +59,34 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  flex-grow: 1;
+  background-color: blue;
+}
+.bottom .corner,
+.top .corner {
+  height: 100%;
+}
+.left .corner,
+.right .corner {
+  width: 100%;
+}
+.left .corner::before,
+.right .corner::before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+.corner {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  aspect-ratio: 1/1 !important;
+  border: 1px solid black;
+  background-color: red;
+  z-index: 1;
 }
 @media (0px < width < 1080px) {
-  body{
+  body {
     font-size: xx-small;
   }
 }
