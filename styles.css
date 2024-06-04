@@ -87,6 +87,30 @@ body {
   height: 100%;
   width: 100%;
 }
+.orangered{
+  background-color: orangered;
+}
+.purple{
+  background-color: purple;
+}
+.seagreen{
+  background-color: seagreen;
+}
+.skyblue{
+  background-color: skyblue;
+}
+.white{
+  background-color: white;
+}
+.brown{
+  background-color: brown;
+}
+.gold{
+  background-color: gold;
+}
+.silver{
+  background-color: silver;
+}
 @media (0px < width < 1080px) {
   body {
     font-size: xx-small;
