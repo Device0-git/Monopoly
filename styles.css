@@ -11,7 +11,7 @@ body {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  background-color: seagreen;
+  background-color: var(--dark-mode);
 }
 #board {
   position: relative;
