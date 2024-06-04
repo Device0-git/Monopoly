@@ -1,0 +1,118 @@
+:root {
+  --dark-mode: black;
+  --space-height: 13%;
+  --spacing-style: space-around;
+}
+
+body {
+  margin: 0px;
+  width: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background-color: var(--dark-mode);
+}
+#board {
+  position: relative;
+  max-height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1/1;
+  margin: 1%;
+}
+.bottom {
+  position: absolute;
+  width: 100%;
+  height: var(--space-height);
+  top: calc(100% - var(--space-height));
+  display: flex;
+  flex-direction: row-reverse;
+}
+.top {
+  position: absolute;
+  width: 100%;
+  height: var(--space-height);
+  display: flex;
+  flex-direction: row;
+}
+.left {
+  position: absolute;
+  height: 100%;
+  width: var(--space-height);
+  display: flex;
+  flex-direction: column-reverse;
+}
+.right {
+  position: absolute;
+  height: 100%;
+  width: var(--space-height);
+  left: calc(100% - var(--space-height));
+  display: flex;
+  flex-direction: column;
+}
+.spaces {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-grow: 1;
+  background-color: beige;
+}
+.bottom .corner,
+.top .corner {
+  height: 100%;
+}
+.left .corner,
+.right .corner {
+  width: 100%;
+}
+.left .corner::before,
+.right .corner::before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.corner {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  aspect-ratio: 1/1 !important;
+  background-color: orangered;
+}
+.start {
+  z-index: 1;
+}
+.corner img {
+  height: 100%;
+  width: 100%;
+}
+.orangered{
+  background-color: orangered;
+}
+.purple{
+  background-color: purple;
+}
+.seagreen{
+  background-color: seagreen;
+}
+.skyblue{
+  background-color: skyblue;
+}
+.white{
+  background-color: white;
+}
+.brown{
+  background-color: brown;
+}
+.gold{
+  background-color: gold;
+}
+.silver{
+  background-color: silver;
+}
+@media (0px < width < 1080px) {
+  body {
+    font-size: xx-small;
+  }
+}
