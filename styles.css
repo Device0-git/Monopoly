@@ -77,7 +77,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  aspect-ratio: 1/1 !important;
+  aspect-ratio: 1/1;
   background-color: orangered;
 }
 .start {
@@ -86,30 +86,6 @@ body {
 .corner img {
   height: 100%;
   width: 100%;
-}
-.orangered{
-  background-color: orangered;
-}
-.purple{
-  background-color: purple;
-}
-.seagreen{
-  background-color: seagreen;
-}
-.skyblue{
-  background-color: skyblue;
-}
-.white{
-  background-color: white;
-}
-.brown{
-  background-color: brown;
-}
-.gold{
-  background-color: gold;
-}
-.silver{
-  background-color: silver;
 }
 @media (0px < width < 1080px) {
   body {
