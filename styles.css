@@ -63,15 +63,10 @@ body {
   opacity: 75%;
   z-index: 3;
 }
-.left .player,
-.right .player {
-  width: 100%;
-  height: calc((100% - 2 * var(--space-height)) / 8);
-}
 .dice {
   position: absolute;
   height: var(--space-height);
-  width: 50px;
+  width: var(--space-height);
   background-color: lime;
   top: calc(100% - var(--space-height));
   left: 100%;
@@ -191,6 +186,11 @@ body {
 .right .corner .player {
   width: 100%;
   height: var(--space-height);
+}
+.left .player,
+.right .player {
+  width: 100%;
+  height: calc((100% - 2 * var(--space-height)) / 8);
 }
 @media (0px < width < 1080px) {
   body {
