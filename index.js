@@ -4,21 +4,49 @@ class CityCard {
     cost,
     rentForGuestHouse,
     rentForPrivateVilla,
-    rentForHotel
+    rentForHotel,
+    owner
   ) {
     this.city = city;
     this.cost = cost;
     this.rentForGuestHouse = rentForGuestHouse;
     this.rentForPrivateVilla = rentForPrivateVilla;
     this.rentForHotel = rentForHotel;
+    this.owner = owner;
   }
 }
+
+const all_cards = [
+  new CityCard("Mumbai", 60000, 5000, 15000, 45000),
+  new CityCard("Delhi", 58000, 4800, 14500, 43500),
+  new CityCard("Chennai", 53000, 4200, 12600, 38500),
+  new CityCard("Kolkata", 51000, 4000, 12000, 36000),
+  new CityCard("Pune", 48000, 3600, 10800, 32500),
+  new CityCard("Surat", 46000, 3400, 10200, 30500),
+  new CityCard("Jaipur", 45000, 3300, 10000, 29500),
+  new CityCard("Lucknow", 43000, 3100, 9400, 28500),
+  new CityCard("Kanpur", 42000, 3000, 9000, 27000),
+  new CityCard("Nagpur", 41000, 2900, 8700, 26000),
+  new CityCard("Patna", 40000, 2800, 8400, 25000),
+  new CityCard("Indore", 39000, 2700, 8100, 24000),
+  new CityCard("Bhopal", 37000, 2500, 7500, 22000),
+  new CityCard("Kochi", 35000, 2300, 6900, 20000),
+  new CityCard("Goa", 31000, 1900, 5700, 16000),
+  new CityCard("Nashik", 30000, 1800, 5400, 15000),
+  new CityCard("Agra", 26000, 1400, 4200, 11000),
+  new CityCard("Amritsar", 24000, 1200, 3600, 9000),
+  new CityCard("Shimla", 23000, 1100, 3300, 8000),
+  new CityCard("Margao", 22000, 1000, 3000, 7000),
+];
 
 class Player {
   money = 150000;
   owned_cards = [];
   debt = 0;
   payments_skipped = 0;
+  lost = false;
+  position = 1;
+  turn = false;
   constructor(name, color) {
     this.name = name;
     this.color = color;
@@ -61,44 +89,64 @@ let get_number_of_players = () => {
   if (nop) return nop;
   else {
     alert("Please Enter a valid Number!");
-    return number_of_players();
+    return get_number_of_players();
   }
 };
 
 let create_players = (number_of_players) => {
+  let res = [];
   for (let i = 1; i <= number_of_players; i++) {
     alert("Enter details for Player " + i);
-    new Player(
-      prompt("What is your name?"),
-      prompt("What is your color of choice?")
+    res.push(
+      new Player(
+        prompt("What is your name?"),
+        prompt("What is your color of choice?")
+      )
     );
   }
+  return res;
 };
 
 let nop = get_number_of_players();
 let players = create_players(nop);
 
-let bank_money = (money * nop) / 2;
+players.forEach((player) => {
+  let p = document.createElement("div");
+  let color = player.color.toLowerCase();
+  p.style.backgroundColor = color;
+  p.classList.add("spaces", "player");
+  p.id = color;
+  let targetEle = document.getElementById(player.position);
+  targetEle.appendChild(p);
+});
+//player 1 can start the game
+players[0].turn = true;
+//game goes on as dice is rolled
+let i = 0;
+function roll_dice() {
+  if (i + 1 > players.length) {
+    i = 0;
+  }
+  let player = players[i++];
+  let inc = Math.floor(Math.random() * 6) + 1;
+  let newpos = player.position + inc;
+  if (newpos > 36) {
+    newpos = newpos - 36;
+  }
+  player.position = newpos;
+  let targetEle = document.getElementById(player.position);
+  let color = player.color.toLowerCase();
+  let p = document.getElementById(color);
+  targetEle.appendChild(p);
+}
 
-const all_cards = [
-  new CityCard("Mumbai", 60000, 5000, 15000, 45000),
-  new CityCard("Delhi", 58000, 4800, 14500, 43500),
-  new CityCard("Chennai", 53000, 4200, 12600, 38500),
-  new CityCard("Kolkata", 51000, 4000, 12000, 36000),
-  new CityCard("Pune", 48000, 3600, 10800, 32500),
-  new CityCard("Surat", 46000, 3400, 10200, 30500),
-  new CityCard("Jaipur", 45000, 3300, 10000, 29500),
-  new CityCard("Lucknow", 43000, 3100, 9400, 28500),
-  new CityCard("Kanpur", 42000, 3000, 9000, 27000),
-  new CityCard("Nagpur", 41000, 2900, 8700, 26000),
-  new CityCard("Patna", 40000, 2800, 8400, 25000),
-  new CityCard("Indore", 39000, 2700, 8100, 24000),
-  new CityCard("Bhopal", 37000, 2500, 7500, 22000),
-  new CityCard("Kochi", 35000, 2300, 6900, 20000),
-  new CityCard("Goa", 31000, 1900, 5700, 16000),
-  new CityCard("Nashik", 30000, 1800, 5400, 15000),
-  new CityCard("Agra", 26000, 1400, 4200, 11000),
-  new CityCard("Amritsar", 24000, 1200, 3600, 9000),
-  new CityCard("Shimla", 23000, 1100, 3300, 8000),
-  new CityCard("Margao", 22000, 1000, 3000, 7000),
-];
+let button = document.getElementsByClassName("dice");
+let bank_money = (150000 * nop) / 2;
+
+//--IDEA-- players will continue to play till all except 1 go bankrupt
+
+// //while players atleast 2 players are playing
+// while (players.filter((item) => item.lost === false).length >= 2) {
+//   //move players across the board one by one
+
+// }

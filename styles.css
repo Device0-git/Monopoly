@@ -20,14 +20,7 @@ body {
   aspect-ratio: 1/1;
   margin: 1%;
 }
-.bottom {
-  position: absolute;
-  width: 100%;
-  height: var(--space-height);
-  top: calc(100% - var(--space-height));
-  display: flex;
-  flex-direction: row-reverse;
-}
+.bottom,
 .top {
   position: absolute;
   width: 100%;
@@ -35,7 +28,12 @@ body {
   display: flex;
   flex-direction: row;
 }
-.left {
+.bottom {
+  top: calc(100% - var(--space-height));
+  flex-direction: row-reverse;
+}
+.left,
+.right {
   position: absolute;
   height: 100%;
   width: var(--space-height);
@@ -43,21 +41,46 @@ body {
   flex-direction: column-reverse;
 }
 .right {
-  position: absolute;
-  height: 100%;
-  width: var(--space-height);
   left: calc(100% - var(--space-height));
-  display: flex;
   flex-direction: column;
 }
 .spaces {
   width: 100%;
   height: 100%;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-end;
   flex-grow: 1;
   background-color: beige;
+}
+.top .player,
+.bottom .player,
+.left .player,
+.right .player {
+  position: absolute;
+  height: 100%;
+  width: calc((100% - 2 * var(--space-height)) / 8);
+  opacity: 75%;
+  z-index: 3;
+}
+.left .player,
+.right .player {
+  width: 100%;
+  height: calc((100% - 2 * var(--space-height)) / 8);
+}
+.dice {
+  position: absolute;
+  height: var(--space-height);
+  width: 50px;
+  background-color: lime;
+  top: calc(100% - var(--space-height));
+  left: 100%;
+}
+.left .spaces,
+.right .spaces {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .bottom .corner,
 .top .corner {
@@ -86,6 +109,88 @@ body {
 .corner img {
   height: 100%;
   width: 100%;
+}
+.top .spaces::before,
+.top .spaces::after,
+.bottom .spaces::before,
+.bottom .spaces::after {
+  content: "";
+  height: 10%;
+  width: calc((100% - 2 * var(--space-height)) / 8);
+  position: absolute;
+}
+.left .spaces::before,
+.right .spaces::before,
+.left .spaces::after,
+.right .spaces::after {
+  content: "";
+  height: calc((100% - 2 * var(--space-height)) / 8);
+  width: 10%;
+  position: absolute;
+}
+.left .spaces::before,
+.right .spaces::before {
+  left: 0px;
+}
+.left .spaces::after,
+.right .spaces::after {
+  right: 0px;
+}
+.top .spaces::before,
+.bottom .spaces::before {
+  top: 0px;
+}
+.top .spaces::after,
+.bottom .spaces::after {
+  bottom: 0px;
+}
+.purple::before,
+.purple::after {
+  background-color: purple;
+}
+.brown::before,
+.brown::after {
+  background-color: brown;
+}
+.silver::before,
+.silver::after {
+  background-color: silver;
+}
+.seagreen::before,
+.seagreen::after {
+  background-color: seagreen;
+}
+.white::before,
+.white::after {
+  background-color: white;
+}
+.skyblue::before,
+.skyblue::after {
+  background-color: skyblue;
+}
+.gold::before,
+.gold::after {
+  background-color: gold;
+}
+.orangered::before,
+.orangered::after {
+  background-color: orangered;
+}
+.player::before,
+.player::after {
+  content: "";
+  width: 0px;
+  height: 0px;
+}
+.top .corner .player,
+.bottom .corner .player {
+  height: 100%;
+  width: var(--space-height);
+}
+.left .corner .player,
+.right .corner .player {
+  width: 100%;
+  height: var(--space-height);
 }
 @media (0px < width < 1080px) {
   body {
