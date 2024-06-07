@@ -128,7 +128,8 @@ function roll_dice() {
     i = 0;
   }
   let player = players[i++];
-  let inc = Math.floor(Math.random() * 6) + 1;
+  // let inc = Math.floor(Math.random() * 6) + 1;
+  let inc = 1; //for debugging
   let newpos = player.position + inc;
   if (newpos > 36) {
     newpos = newpos - 36;
@@ -138,15 +139,31 @@ function roll_dice() {
   let color = player.color.toLowerCase();
   let p = document.getElementById(color);
   targetEle.appendChild(p);
+  //if players are together, search which side are they on
+  //for all four sides, divide their height/width as needed
+  let players_together = document.querySelectorAll(".player~.player");
+  if (players_together) {
+    let parent_elements = new Set();
+    players_together.forEach((player) => {
+      let id = player.parentElement.id;
+      parent_elements.add(document.getElementById(id));
+    });
+    parent_elements.forEach((ele) => {
+      console.log(ele);
+      Array.from(ele.children).forEach((child) => {
+        ///make it so that only the players in same element get split
+        //otherwise they should occupy all the space
+        //below code makes it so that the element height decreases for every dice roll
+        //which is unexpected. Try adding styles by using class next
+        child.style.height =
+          (child.offsetHeight / ele.children.length).toString() + "px";
+      });
+    });
+  }
+  // else {
+
+  // }
 }
 
 let button = document.getElementsByClassName("dice");
 let bank_money = (150000 * nop) / 2;
-
-//--IDEA-- players will continue to play till all except 1 go bankrupt
-
-// //while players atleast 2 players are playing
-// while (players.filter((item) => item.lost === false).length >= 2) {
-//   //move players across the board one by one
-
-// }
