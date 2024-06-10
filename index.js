@@ -190,7 +190,7 @@ let players = [
     turn: true,
   },
 ];
-
+//Initiate players at start
 players.forEach((player) => {
   let p = document.createElement("div");
   let color = player.color.toLowerCase();
