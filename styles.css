@@ -3,7 +3,6 @@
   --space-height: 13%;
   --spacing-style: space-around;
 }
-
 body {
   margin: 0px;
   width: 100vh;
@@ -53,38 +52,45 @@ body {
   flex-grow: 1;
   background-color: beige;
 }
-.top .player,
-.bottom .player,
-.left .player,
-.right .player {
+.left .container,
+.right .container {
   position: absolute;
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  height: calc((100% - 2 * var(--space-height)) / 8);
+  opacity: 75%;
+  z-index: 3;
+  margin: 0px;
+}
+.corner .container {
+  position: absolute;
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  height: calc((100% + var(--space-height) / 3) / 8);
+  aspect-ratio: 1/1;
+  opacity: 75%;
+  z-index: 3;
+}
+.corner .container .player{
+
+}
+.top .container,
+.bottom .container {
+  position: absolute;
+  display: flex;
+  flex-flow: column;
   height: 100%;
   width: calc((100% - 2 * var(--space-height)) / 8);
   opacity: 75%;
   z-index: 3;
 }
-.dice {
-  position: absolute;
-  height: var(--space-height);
-  width: var(--space-height);
-  background-color: lime;
-  top: calc(100% - var(--space-height));
-  left: 100%;
-}
-.dice::before{
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  content: "Dice";
-}
 .left .spaces,
 .right .spaces {
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
+  width: 100%;
 }
+/* styling for corner cards */
 .bottom .corner,
 .top .corner {
   height: 100%;
@@ -113,6 +119,7 @@ body {
   height: 100%;
   width: 100%;
 }
+/* styling for color coded cards */
 .top .spaces::before,
 .top .spaces::after,
 .bottom .spaces::before,
@@ -123,14 +130,22 @@ body {
   position: absolute;
 }
 .left .spaces::before,
-.right .spaces::before,
+.right .spaces::before {
+  content: "";
+  height: calc((100% - 2 * var(--space-height)) / 8);
+  width: 10%;
+  left: 10%;
+  position: absolute;
+}
 .left .spaces::after,
 .right .spaces::after {
   content: "";
   height: calc((100% - 2 * var(--space-height)) / 8);
   width: 10%;
+  left: 90%;
   position: absolute;
 }
+/* for cards color coding */
 .left .spaces::before,
 .right .spaces::before {
   left: 0px;
@@ -146,6 +161,14 @@ body {
 .top .spaces::after,
 .bottom .spaces::after {
   bottom: 0px;
+}
+.corner .player {
+  max-width: 100%;
+  height: 100%;
+}
+.left .player,
+.right .player {
+  width: 100%;
 }
 .purple::before,
 .purple::after {
@@ -179,29 +202,26 @@ body {
 .orangered::after {
   background-color: orangered;
 }
-.player::before,
-.player::after {
-  content: "";
-  width: 0px;
-  height: 0px;
-}
-.top .corner .player,
-.bottom .corner .player {
-  height: 100%;
-  width: var(--space-height);
-}
-.left .corner .player,
-.right .corner .player {
-  width: 100%;
-  height: var(--space-height);
-}
-.left .player,
-.right .player {
-  width: 100%;
-  height: calc((100% - 2 * var(--space-height)) / 8);
-}
+/* for mobile view */
 @media (0px < width < 1080px) {
   body {
-    font-size: xx-small;
+    font-size: x-small;
   }
+}
+/* styles for dice */
+.dice {
+  position: absolute;
+  height: var(--space-height);
+  width: var(--space-height);
+  background-color: lime;
+  top: calc(100% - var(--space-height));
+  left: 100%;
+}
+.dice::before {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  content: "Dice";
 }
