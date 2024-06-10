@@ -51,16 +51,38 @@ body {
   flex-grow: 1;
   background-color: beige;
 }
+/* styling for players on non-corner spaces */
 .left .container,
 .right .container {
   position: absolute;
   display: flex;
   flex-flow: row;
-  width: 100%;
+  width: 80%;
   height: calc((100% - 2 * var(--space-height)) / 8);
   opacity: 75%;
   z-index: 3;
   margin: 0px;
+}
+.top .container,
+.bottom .container {
+  position: absolute;
+  display: flex;
+  flex-flow: column;
+  height: 80%;
+  width: calc((100% - 2 * var(--space-height)) / 8);
+  opacity: 75%;
+  z-index: 3;
+}
+/* styling for corner players */
+.top .corner .container,
+.bottom .corner .container {
+  position: absolute;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: calc((100% - 8 * calc((100% - 2 * var(--space-height)) / 8)) / 2);
+  opacity: 75%;
+  z-index: 3;
 }
 .left .corner .container,
 .right .corner .container {
@@ -69,26 +91,6 @@ body {
   flex-flow: row;
   width: 100%;
   height: calc((100% - 8 * calc((100% - 2 * var(--space-height)) / 8)) / 2);
-  opacity: 75%;
-  z-index: 3;
-}
-.top .container,
-.bottom .container {
-  position: absolute;
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  width: calc((100% - 2 * var(--space-height)) / 8);
-  opacity: 75%;
-  z-index: 3;
-}
-.top .corner .container,
-.bottom .corner .container {
-  position: absolute;
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  width: calc((100% - 8 * calc((100% - 2 * var(--space-height)) / 8)) / 2);
   opacity: 75%;
   z-index: 3;
 }
