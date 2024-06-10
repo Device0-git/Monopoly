@@ -84,31 +84,112 @@ class Player {
   }
 }
 
-let get_number_of_players = () => {
-  let nop = Number(prompt("How many number of players are there?"));
-  if (nop) return nop;
-  else {
-    alert("Please Enter a valid Number!");
-    return get_number_of_players();
-  }
-};
+// let get_number_of_players = () => {
+//   let nop = Number(prompt("How many number of players are there?"));
+//   if (nop) return nop;
+//   else {
+//     alert("Please Enter a valid Number!");
+//     return get_number_of_players();
+//   }
+// };
 
-let create_players = (number_of_players) => {
-  let res = [];
-  for (let i = 1; i <= number_of_players; i++) {
-    alert("Enter details for Player " + i);
-    res.push(
-      new Player(
-        prompt("What is your name?"),
-        prompt("What is your color of choice?")
-      )
-    );
-  }
-  return res;
-};
+// let create_players = (number_of_players) => {
+//   let res = [];
+//   for (let i = 1; i <= number_of_players; i++) {
+//     alert("Enter details for Player " + i);
+//     res.push(
+//       new Player(
+//         prompt("What is your name?"),
+//         prompt("What is your color of choice?")
+//       )
+//     );
+//   }
+//   return res;
+// };
 
-let nop = get_number_of_players();
-let players = create_players(nop);
+// let nop = get_number_of_players();
+// let players = create_players(nop);
+
+//dummy players for debugging
+let players = [
+  {
+    color: "Violet",
+    debt: 0,
+    lost: false,
+    money: 150000,
+    name: "Shivam",
+    owned_cards: [],
+    payments_skipped: 0,
+    position: 1,
+    turn: true,
+  },
+  {
+    color: "Indigo",
+    debt: 0,
+    lost: false,
+    money: 150000,
+    name: "Shakti",
+    owned_cards: [],
+    payments_skipped: 0,
+    position: 1,
+    turn: false,
+  },
+  {
+    color: "Blue",
+    debt: 0,
+    lost: false,
+    money: 150000,
+    name: "Nandini",
+    owned_cards: [],
+    payments_skipped: 0,
+    position: 1,
+    turn: false,
+  },
+  {
+    color: "Green",
+    debt: 0,
+    lost: false,
+    money: 150000,
+    name: "Rutwik",
+    owned_cards: [],
+    payments_skipped: 0,
+    position: 1,
+    turn: false,
+  },
+  {
+    color: "Yellow",
+    debt: 0,
+    lost: false,
+    money: 150000,
+    name: "Somnath",
+    owned_cards: [],
+    payments_skipped: 0,
+    position: 1,
+    turn: false,
+  },
+  {
+    color: "Orange",
+    debt: 0,
+    lost: false,
+    money: 150000,
+    name: "Bhai",
+    owned_cards: [],
+    payments_skipped: 0,
+    position: 1,
+    turn: false,
+  },
+  {
+    color: "Red",
+    debt: 0,
+    lost: false,
+    money: 150000,
+    name: "Nancy",
+    owned_cards: [],
+    payments_skipped: 0,
+    position: 1,
+    turn: false,
+  },
+];
 
 players.forEach((player) => {
   let p = document.createElement("div");
@@ -135,7 +216,10 @@ function roll_dice() {
     newpos = newpos - 36;
   }
   player.position = newpos;
-  let targetEle = document.getElementById(player.position).children[0];
+  let targetEleLen = document.getElementById(player.position).children.length;
+  let targetEle = document.getElementById(player.position).children[
+    targetEleLen - 1
+  ];
   let color = player.color.toLowerCase();
   let p = document.getElementById(color);
   targetEle.appendChild(p);
