@@ -205,7 +205,7 @@ body {
 /* for mobile view */
 @media (0px < width < 1080px) {
   body {
-    font-size: x-small;
+    font-size: xx-small;
   }
 }
 /* styles for dice */
