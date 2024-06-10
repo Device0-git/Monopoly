@@ -197,7 +197,10 @@ players.forEach((player) => {
   p.style.backgroundColor = color;
   p.classList.add("spaces", "player");
   p.id = color;
-  let targetEle = document.getElementById(player.position);
+  let targetEleLen = document.getElementById(player.position).children.length;
+  let targetEle = document.getElementById(player.position).children[
+    targetEleLen - 1
+  ];
   targetEle.appendChild(p);
 });
 //player 1 can start the game
