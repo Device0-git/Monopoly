@@ -37,6 +37,12 @@ const all_cards = [
   new CityCard("Amritsar", 24000, 1200, 3600, 9000),
   new CityCard("Shimla", 23000, 1100, 3300, 8000),
   new CityCard("Margao", 22000, 1000, 3000, 7000),
+  new CityCard("Water", 22000, 1000, 3000, 7000),
+  new CityCard("Railway", 22000, 1000, 3000, 7000),
+  new CityCard("Elec Co.", 22000, 1000, 3000, 7000),
+  new CityCard("B.E.S.T.", 22000, 1000, 3000, 7000),
+  new CityCard("Indigo", 22000, 1000, 3000, 7000),
+  new CityCard("Boat", 22000, 1000, 3000, 7000),
 ];
 
 class Player {
@@ -84,112 +90,113 @@ class Player {
   }
 }
 
-// let get_number_of_players = () => {
-//   let nop = Number(prompt("How many number of players are there?"));
-//   if (nop) return nop;
-//   else {
-//     alert("Please Enter a valid Number!");
-//     return get_number_of_players();
-//   }
-// };
+let get_number_of_players = () => {
+  let nop = Number(prompt("How many number of players are there?"));
+  if (nop) return nop;
+  else {
+    alert("Please Enter a valid Number!");
+    return get_number_of_players();
+  }
+};
 
-// let create_players = (number_of_players) => {
-//   let res = [];
-//   for (let i = 1; i <= number_of_players; i++) {
-//     alert("Enter details for Player " + i);
-//     res.push(
-//       new Player(
-//         prompt("What is your name?"),
-//         prompt("What is your color of choice?")
-//       )
-//     );
-//   }
-//   return res;
-// };
+let create_players = (number_of_players) => {
+  let res = [];
+  for (let i = 1; i <= number_of_players; i++) {
+    alert("Enter details for Player " + i);
+    res.push(
+      new Player(
+        prompt("What is your name?"),
+        prompt("What is your color of choice?")
+      )
+    );
+  }
+  return res;
+};
 
-// let nop = get_number_of_players();
-// let players = create_players(nop);
+let nop = get_number_of_players();
+let players = create_players(nop);
+// let nop = 7;
 
 //dummy players for debugging
-let players = [
-  {
-    color: "Red",
-    debt: 0,
-    lost: false,
-    money: 150000,
-    name: "Nancy",
-    owned_cards: [],
-    payments_skipped: 0,
-    position: 1,
-    turn: false,
-  },
-  {
-    color: "Orange",
-    debt: 0,
-    lost: false,
-    money: 150000,
-    name: "Bhai",
-    owned_cards: [],
-    payments_skipped: 0,
-    position: 1,
-    turn: false,
-  },
-  {
-    color: "Yellow",
-    debt: 0,
-    lost: false,
-    money: 150000,
-    name: "Somnath",
-    owned_cards: [],
-    payments_skipped: 0,
-    position: 1,
-    turn: false,
-  },
-  {
-    color: "Green",
-    debt: 0,
-    lost: false,
-    money: 150000,
-    name: "Rutwik",
-    owned_cards: [],
-    payments_skipped: 0,
-    position: 1,
-    turn: false,
-  },
-  {
-    color: "Blue",
-    debt: 0,
-    lost: false,
-    money: 150000,
-    name: "Nandini",
-    owned_cards: [],
-    payments_skipped: 0,
-    position: 1,
-    turn: false,
-  },
-  {
-    color: "Indigo",
-    debt: 0,
-    lost: false,
-    money: 150000,
-    name: "Shakti",
-    owned_cards: [],
-    payments_skipped: 0,
-    position: 1,
-    turn: false,
-  },
-  {
-    color: "Violet",
-    debt: 0,
-    lost: false,
-    money: 150000,
-    name: "Shivam",
-    owned_cards: [],
-    payments_skipped: 0,
-    position: 1,
-    turn: true,
-  },
-];
+// let players = [
+//   {
+//     color: "Red",
+//     debt: 0,
+//     lost: false,
+//     money: 150000,
+//     name: "Nancy",
+//     owned_cards: [],
+//     payments_skipped: 0,
+//     position: 1,
+//     turn: false,
+//   },
+//   {
+//     color: "Orange",
+//     debt: 0,
+//     lost: false,
+//     money: 150000,
+//     name: "Bhai",
+//     owned_cards: [],
+//     payments_skipped: 0,
+//     position: 1,
+//     turn: false,
+//   },
+//   {
+//     color: "Yellow",
+//     debt: 0,
+//     lost: false,
+//     money: 150000,
+//     name: "Somnath",
+//     owned_cards: [],
+//     payments_skipped: 0,
+//     position: 1,
+//     turn: false,
+//   },
+//   {
+//     color: "Green",
+//     debt: 0,
+//     lost: false,
+//     money: 150000,
+//     name: "Rutwik",
+//     owned_cards: [],
+//     payments_skipped: 0,
+//     position: 1,
+//     turn: false,
+//   },
+//   {
+//     color: "Blue",
+//     debt: 0,
+//     lost: false,
+//     money: 150000,
+//     name: "Nandini",
+//     owned_cards: [],
+//     payments_skipped: 0,
+//     position: 1,
+//     turn: false,
+//   },
+//   {
+//     color: "Indigo",
+//     debt: 0,
+//     lost: false,
+//     money: 150000,
+//     name: "Shakti",
+//     owned_cards: [],
+//     payments_skipped: 0,
+//     position: 1,
+//     turn: false,
+//   },
+//   {
+//     color: "Violet",
+//     debt: 0,
+//     lost: false,
+//     money: 150000,
+//     name: "Shivam",
+//     owned_cards: [],
+//     payments_skipped: 0,
+//     position: 1,
+//     turn: false,
+//   },
+// ];
 //Initiate players at start
 players.forEach((player) => {
   let p = document.createElement("div");
@@ -203,22 +210,34 @@ players.forEach((player) => {
   ];
   targetEle.appendChild(p);
 });
-//player 1 can start the game
-players[0].turn = true;
 //game goes on as dice is rolled
 let i = 0;
+let prev_index = i - 1;
 function roll_dice() {
   if (i + 1 > players.length) {
     i = 0;
+    prev_index = players.length - 1;
   }
-  let player = players[i++];
-  // let inc = Math.floor(Math.random() * 6) + 1;
-  let inc = 1; //for debugging
+  let player = players[i];
+  prev_index = i - 1;
+  if (prev_index < 0) {
+    i = 0;
+    prev_index = players.length - 1;
+  }
+  player.turn = true;
+  player = players[prev_index];
+  player.turn = false;
+  player = players[i];
+  i++;
+  let inc = Math.floor(Math.random() * 6) + 1;
+  // let inc = 1; //for debugging
   let newpos = player.position + inc;
   if (newpos > 36) {
     newpos = newpos - 36;
   }
   player.position = newpos;
+  let current_card = document.getElementById(player.position);
+  console.log(current_card.innerText);
   let targetEleLen = document.getElementById(player.position).children.length;
   let targetEle = document.getElementById(player.position).children[
     targetEleLen - 1
@@ -226,7 +245,29 @@ function roll_dice() {
   let color = player.color.toLowerCase();
   let p = document.getElementById(color);
   targetEle.appendChild(p);
+  function card_is_available(text) {
+    let res;
+    for (let i = 0; i < all_cards.length; i++) {
+      let card = all_cards[i];
+      if (card.city == text) {
+        res = card;
+        break;
+      }
+    }
+    return res;
+  }
+  let cia = card_is_available(current_card.innerText);
+  if (player.turn == true && cia) {
+    let card_cost = cia.cost;
+    //have an option to buy ticket only if it is players turn
+    //player can only buy ticket on his/her own turn
+    // player.buy_card(cia, card_cost);
+  }
 }
 
 let button = document.getElementsByClassName("dice");
 let bank_money = (150000 * nop) / 2;
+
+document.addEventListener("keypress", (event) => {
+  if (event.keyCode === 13) roll_dice();
+});
