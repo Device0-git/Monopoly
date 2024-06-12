@@ -73,20 +73,23 @@ class Player {
     this.money = this.money + money;
     bank_money = bank_money - money;
   }
-  payback(money) {
-    if (this.debt - money < 0) alert("Don't pay more than you owe!");
+  payback() {
+    let money = prompt("How much money can you pay back?");
+    if (this.debt - money < 0)
+      alert(`You only owe ${this.debt} to the bank, Don't pay more!`);
     else if (this.debt === 0) alert("Can't pay if you don't owe!");
-    else {
+    else if (this.debt / money >= 2) {
+      this.debt = this.debt - money;
+      this.money = this.money - money;
+      bank_money = bank_money + money;
+      this.payments_skipped -= 3;
+      alert(`You get 3 more days but still owe ${this.debt} to the bank`);
+    } else {
       this.debt = this.debt - money;
       this.money = this.money - money;
       bank_money = bank_money + money;
       alert(`You now owe ${this.debt} to the bank`);
     }
-  }
-  payback_all() {
-    this.money = this.money - this.debt;
-    bank_money = bank_money + this.debt;
-    this.debt = 0;
   }
 }
 
@@ -197,6 +200,7 @@ let players = create_players(nop);
 //     turn: false,
 //   },
 // ];
+
 //Initiate players at start
 players.forEach((player) => {
   let p = document.createElement("div");
