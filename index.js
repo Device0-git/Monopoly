@@ -135,13 +135,35 @@ class Player {
     this.name = name;
     this.color = color;
   }
+  pay_rent(card, owner) {
+    console.log(
+      this.name +
+        " paid " +
+        card.rent_for_guest_house +
+        " to " +
+        card.owner +
+        " for " +
+        card.city
+    );
+    this.money = this.money - card.rent_for_guest_house;
+    owner.money = owner.money + card.rent_for_guest_house;
+  }
   buy_card(card) {
-    let money = card.cost;
-    if (this.money - money < 0) {
-      alert("You're poor, take loan from the bank or sell your belongings.");
+    if (card.owner === this.name) {
+      return;
+    } else if (card.owner === undefined) {
+      let money = card.cost;
+      if (this.money - money < 0) {
+        alert("You're poor, take loan from the bank or sell your belongings.");
+      }
+      this.money = this.money - money;
+      this.owned_cards.push(card);
+      card.owner = this.name;
+    } else {
+      alert(
+        card.owner + " owns the card, you can buy it when they want to sell it!"
+      );
     }
-    this.money = this.money - money;
-    this.owned_cards.push(card);
   }
   sell_card() {
     let player = prompt("Who do you want to sell to?");
@@ -290,7 +312,8 @@ function roll_dice() {
     }
     return;
   } else current_card = document.getElementById(player.position);
-  console.log(current_card.innerText);
+  let current_card_text = current_card.innerText;
+  console.log(current_card_text);
   //getting inner container of spaces the cards occupy
   let target_element_length = document.getElementById(player.position).children
     .length;
@@ -300,7 +323,8 @@ function roll_dice() {
   let color = player.color.toLowerCase();
   let p = document.getElementById(color);
   target_element.appendChild(p);
-  function card_is_available(text) {
+  //getting card for current player
+  function get_card(text) {
     let res;
     for (let i = 0; i < all_cards.length; i++) {
       let card = all_cards[i];
@@ -311,8 +335,20 @@ function roll_dice() {
     }
     return res;
   }
+  //getting player for current card
+  function get_player(owner_name) {
+    let res;
+    for (let i = 0; i < players.length; i++) {
+      let player = players[i];
+      if (player.name == owner_name) {
+        res = player;
+        break;
+      }
+    }
+    return res;
+  }
   //getting the card name current player is on
-  let card = card_is_available(current_card.innerText);
+  let card = get_card(current_card_text);
   if (player.turn == true && card) {
     console.log(
       player.money +
@@ -331,6 +367,9 @@ function roll_dice() {
     }
     if (player.owned_cards.length > 0) {
       document.getElementsByClassName("sell")[0].style.display = "block";
+    }
+    if (player.money <= 75000) {
+      document.getElementsByClassName("borrow")[0].style.display = "block";
     }
     if (card.is_super_special_card) {
       document.getElementsByClassName("payback")[0].style.display = "none";
@@ -359,8 +398,16 @@ function roll_dice() {
       }
       console.log(player.money);
       return;
+    } else if (card.owner === undefined) {
+      let buy_button = document.getElementsByClassName("buy")[0];
+      buy_button.style.display = "block";
+      buy_button.addEventListener("click", () => {
+        player.buy_card(get_card(current_card_text));
+      });
     } else {
-      document.getElementsByClassName("buy")[0].style.display = "block";
+      let owned_card = get_card(current_card_text);
+      let owned_by_player = get_player(owned_card.owner);
+      player.pay_rent(owned_card, owned_by_player);
     }
   }
 }

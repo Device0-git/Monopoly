@@ -265,6 +265,9 @@ body {
 .buy::before{
   content: "Buy";
 }
+.borrow::before{
+  content: "Borrow";
+}
 .sell::before{
   content: "Sell";
 }
