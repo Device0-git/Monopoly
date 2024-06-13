@@ -136,15 +136,6 @@ class Player {
     this.color = color;
   }
   pay_rent(card, owner) {
-    console.log(
-      this.name +
-        " paid " +
-        card.rent_for_guest_house +
-        " to " +
-        card.owner +
-        " for " +
-        card.city
-    );
     this.money = this.money - card.rent_for_guest_house;
     owner.money = owner.money + card.rent_for_guest_house;
   }
@@ -304,25 +295,15 @@ function roll_dice() {
     document.getElementsByClassName("sell")[0].style.display = "none";
     document.getElementsByClassName("buy")[0].style.display = "none";
     if (player.position == 1) {
-      console.log(player.money);
-      alert("player position 1");
       player.money = player.money + 10000;
-      console.log(player.money);
       //play mosh mosh video
     } else if (player.position == 10) {
-      console.log(player.money);
-      alert("player position 10");
       player.money = player.money - 200;
-      console.log(player.money);
       //play za warudo video
     } else if (player.position == 19) {
-      console.log(player.money);
-      alert("player position 19");
       player.money = player.money + 100;
-      console.log(player.money);
       //play tomodachi dayo video
     } else if (player.position == 28) {
-      alert("player position 28");
       //play phonk video
     }
     return;
