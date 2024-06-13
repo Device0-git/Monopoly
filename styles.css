@@ -247,6 +247,7 @@ body {
 }
 /* style for button elements */
 .button{
+  display: none;
   height: 50%;
   width: auto;
   padding-left: 5%;
@@ -269,7 +270,4 @@ body {
 }
 .payback::before{
   content: "Payback";
-}
-.payback{
-  display: none;
 }

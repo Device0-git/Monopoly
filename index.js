@@ -47,9 +47,9 @@ const all_cards = [
   new CityCard("B.E.S.T.", 22000, 1000, 3000, 7000),
   new CityCard("Indigo", 22000, 1000, 3000, 7000),
   new CityCard("Boat", 22000, 1000, 3000, 7000),
-  //special_card CARDS - Turn is lost and automatic transaction happens
-  new CityCard("Jail", -200, undefined, undefined, undefined, undefined, true),
-  new CityCard("Club", 100, undefined, undefined, undefined, undefined, true),
+  //SPECIAL CARDS - Turn is lost and automatic transaction happens
+  new CityCard("Jail", 200, undefined, undefined, undefined, undefined, true),
+  new CityCard("Club", -100, undefined, undefined, undefined, undefined, true),
   new CityCard(
     "Resthouse",
     0,
@@ -61,23 +61,23 @@ const all_cards = [
   ),
   new CityCard(
     "Start",
-    10000,
+    -10000,
     undefined,
     undefined,
     undefined,
     undefined,
     true
   ),
-  //SUPER special_card CARDS - dice roll determines cost to player
+  //SUPER SPECIAL CARDS - dice roll determines cost to player
   new CityCard(
-    "Tax", /* All tax goes to the bank */
+    "Tax" /* All tax goes to the bank */,
     [
-      "10%", /* Income Tax: 10% of starting cash to simulate regular earnings taxation. */
-      "5",  /* Property Tax: 5% of total property value to simulate real estate taxation. */
-      10000, /* Luxury Tax: A flat rate applied to players for owning high-value assets, ensuring wealthier players contribute more. */
-      5000,  /* Service Tax: A flat rate to simulate the cost of public services and utilities. */
-      "2",  /* Wealth Tax: 2% of total assets (cash + property value) to ensure a fair contribution from players with significant wealth. */
-      7500   /* Emergency Tax: A flat rate for special circumstances such as unforeseen events, ensuring players have to strategize for unexpected costs. */
+      "10C" /* Income Tax: 10% of starting cash to simulate regular earnings taxation. */,
+      "5P" /* Property Tax: 5% of total property value to simulate real estate taxation. */,
+      10000 /* Luxury Tax: A flat rate applied to players for owning high-value assets, ensuring wealthier players contribute more. */,
+      5000 /* Service Tax: A flat rate to simulate the cost of public services and utilities. */,
+      "2A" /* Wealth Tax: 2% of total assets (cash + property value) to ensure a fair contribution from players with significant wealth. */,
+      7500 /* Emergency Tax: A flat rate for special circumstances such as unforeseen events, ensuring players have to strategize for unexpected costs. */,
     ],
     undefined,
     undefined,
@@ -89,12 +89,11 @@ const all_cards = [
   new CityCard(
     "Chance",
     [
-      -2000,   /* Received a bonus for good performance. */
-      3000,  /* Fine for violating traffic rules. */
-      -5000,   /* Inheritance from a distant relative. */
-      1500,  /* Medical expenses. */
-      -1000,   /* Won a small lottery prize. */
-      2000   /* Car repair costs. */
+      -2000 /* Received a bonus for good performance. */,
+      3000 /* Fine for violating traffic rules. */,
+      -5000 /* Inheritance from a distant relative. */,
+      1500 /* Medical expenses. */, -1000 /* Won a small lottery prize. */,
+      2000 /* Car repair costs. */,
     ],
     undefined,
     undefined,
@@ -106,12 +105,11 @@ const all_cards = [
   new CityCard(
     "Service",
     [
-      1000,   /* Paid for a cleaning service. */
-      1500,   /* Internet subscription fee. */
-      2000,   /* Car wash service fee. */
-      2500,   /* Landscaping service payment. */
-      3000,   /* House maintenance service fee. */
-      3500    /* Security service payment. */
+      1000 /* Paid for a cleaning service. */,
+      1500 /* Internet subscription fee. */, 2000 /* Car wash service fee. */,
+      2500 /* Landscaping service payment. */,
+      3000 /* House maintenance service fee. */,
+      3500 /* Security service payment. */,
     ],
     undefined,
     undefined,
@@ -125,6 +123,9 @@ const all_cards = [
 class Player {
   money = 150000;
   owned_cards = [];
+  property_value = this.owned_cards.reduce((acc, card) => {
+    acc += card.cost;
+  }, 0);
   debt = 0;
   payments_skipped = 0;
   lost = false;
@@ -134,18 +135,30 @@ class Player {
     this.name = name;
     this.color = color;
   }
-  buy_card(card, money) {
+  buy_card(card) {
+    let money = card.cost;
     if (this.money - money < 0) {
       alert("You're poor, take loan from the bank or sell your belongings.");
     }
     this.money = this.money - money;
     this.owned_cards.push(card);
   }
-  sell_card(card, money) {
+  sell_card() {
+    let player = prompt("Who do you want to sell to?");
+    let card = prompt("What card do you want to sell?");
+    let money = prompt("How much money do they pay?");
     this.money = this.money + money;
-    this.owned_cards.splice(this.owned_cards.findIndex(card), 1);
+    player.owned_cards = this.owned_cards.splice(
+      this.owned_cards.findIndex(card),
+      1
+    );
   }
-  borrow_money(money) {
+  borrow_money() {
+    if (this.debt > bank_money / nop) {
+      alert("You're at your borrow limit!");
+      return;
+    }
+    let money = prompt("How much money do you need?");
     this.debt = this.debt + money;
     this.money = this.money + money;
     bank_money = bank_money - money;
@@ -246,16 +259,37 @@ function roll_dice() {
   player = players[i];
   i++;
   //dice rolls
-  let inc = Math.floor(Math.random() * 6) + 1;
-  // let inc = 1; //for debugging
-  let new_position = player.position + inc;
+  let dice_roll = Math.floor(Math.random() * 6) + 1;
+  // let dice_roll = 1; //for debugging
+  let new_position = player.position + dice_roll;
   //player comes full circle on board
   if (new_position > 36) {
     new_position = new_position - 36;
   }
   player.position = new_position;
-  //getting the card current player is on
-  let current_card = document.getElementById(player.position);
+  //getting the card name
+  let current_card;
+  if ([1, 10, 19, 28].includes(player.position)) {
+    document.getElementsByClassName("payback")[0].style.display = "none";
+    document.getElementsByClassName("sell")[0].style.display = "none";
+    document.getElementsByClassName("buy")[0].style.display = "none";
+    if (player.position == 1) {
+      player.money = player.money - 200;
+      console.log(player.money);
+      //play mosh mosh video
+    } else if (player.position == 10) {
+      player.money = player.money + 100;
+      console.log(player.money);
+      //play za warudo video
+    } else if (player.position == 19) {
+      //play tomodachi dayo video
+    } else if (player.position == 28) {
+      player.money = player.money + 10000;
+      console.log(player.money);
+      //play phonk video
+    }
+    return;
+  } else current_card = document.getElementById(player.position);
   console.log(current_card.innerText);
   //getting inner container of spaces the cards occupy
   let target_element_length = document.getElementById(player.position).children
@@ -277,14 +311,11 @@ function roll_dice() {
     }
     return res;
   }
+  //getting the card name current player is on
   let card = card_is_available(current_card.innerText);
   if (player.turn == true && card) {
-    console.log(card);
-    let card_cost = card.cost;
     console.log(
       player.money +
-        " - " +
-        card_cost +
         " - " +
         card.is_special_card +
         " - " +
@@ -298,6 +329,39 @@ function roll_dice() {
     if (player.debt > 0) {
       document.getElementsByClassName("payback")[0].style.display = "block";
     }
+    if (player.owned_cards.length > 0) {
+      document.getElementsByClassName("sell")[0].style.display = "block";
+    }
+    if (card.is_super_special_card) {
+      document.getElementsByClassName("payback")[0].style.display = "none";
+      document.getElementsByClassName("sell")[0].style.display = "none";
+      document.getElementsByClassName("buy")[0].style.display = "none";
+      let roll = card.cost[dice_roll - 1];
+      console.log(typeof roll);
+      if (typeof roll == "string") {
+        //C - cash, P - property, A - both
+        if (roll.endsWith("C")) {
+          player.money =
+            player.money - (player.money * Number(roll.slice(0, -1))) / 100;
+        } else if (roll.endsWith("P")) {
+          player.money =
+            player.money -
+            (player.property_value * Number(roll.slice(0, -1))) / 100;
+        } else if (roll.endsWith("A")) {
+          player.money =
+            player.money -
+            ((player.money + player.property_value) *
+              Number(roll.slice(0, -1))) /
+              100;
+        }
+      } else {
+        player.money = player.money - roll;
+      }
+      console.log(player.money);
+      return;
+    } else {
+      document.getElementsByClassName("buy")[0].style.display = "block";
+    }
   }
 }
 
@@ -310,3 +374,7 @@ document.addEventListener("keypress", (event) => {
     console.log("dice was rolled!");
   }
 });
+// prevent page reload
+// window.addEventListener("beforeunload", function (event) {
+//   event.preventDefault();
+// });
