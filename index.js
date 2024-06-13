@@ -149,9 +149,7 @@ class Player {
     owner.money = owner.money + card.rent_for_guest_house;
   }
   buy_card(card) {
-    if (card.owner === this.name) {
-      return;
-    } else if (card.owner === undefined) {
+    if (card.owner === undefined) {
       let money = card.cost;
       if (this.money - money < 0) {
         alert("You're poor, take loan from the bank or sell your belongings.");
@@ -289,31 +287,8 @@ function roll_dice() {
     new_position = new_position - 36;
   }
   player.position = new_position;
-  //getting the card name
-  let current_card;
-  if ([1, 10, 19, 28].includes(player.position)) {
-    document.getElementsByClassName("payback")[0].style.display = "none";
-    document.getElementsByClassName("sell")[0].style.display = "none";
-    document.getElementsByClassName("buy")[0].style.display = "none";
-    if (player.position == 1) {
-      player.money = player.money - 200;
-      console.log(player.money);
-      //play mosh mosh video
-    } else if (player.position == 10) {
-      player.money = player.money + 100;
-      console.log(player.money);
-      //play za warudo video
-    } else if (player.position == 19) {
-      //play tomodachi dayo video
-    } else if (player.position == 28) {
-      player.money = player.money + 10000;
-      console.log(player.money);
-      //play phonk video
-    }
-    return;
-  } else current_card = document.getElementById(player.position);
+  let current_card = document.getElementById(player.position);
   let current_card_text = current_card.innerText;
-  console.log(current_card_text);
   //getting inner container of spaces the cards occupy
   let target_element_length = document.getElementById(player.position).children
     .length;
@@ -323,6 +298,35 @@ function roll_dice() {
   let color = player.color.toLowerCase();
   let p = document.getElementById(color);
   target_element.appendChild(p);
+  //getting the card name
+  if ([1, 10, 19, 28].includes(player.position)) {
+    document.getElementsByClassName("payback")[0].style.display = "none";
+    document.getElementsByClassName("sell")[0].style.display = "none";
+    document.getElementsByClassName("buy")[0].style.display = "none";
+    if (player.position == 1) {
+      console.log(player.money);
+      alert("player position 1");
+      player.money = player.money + 10000;
+      console.log(player.money);
+      //play mosh mosh video
+    } else if (player.position == 10) {
+      console.log(player.money);
+      alert("player position 10");
+      player.money = player.money - 200;
+      console.log(player.money);
+      //play za warudo video
+    } else if (player.position == 19) {
+      console.log(player.money);
+      alert("player position 19");
+      player.money = player.money + 100;
+      console.log(player.money);
+      //play tomodachi dayo video
+    } else if (player.position == 28) {
+      alert("player position 28");
+      //play phonk video
+    }
+    return;
+  }
   //getting card for current player
   function get_card(text) {
     let res;
@@ -350,13 +354,6 @@ function roll_dice() {
   //getting the card name current player is on
   let card = get_card(current_card_text);
   if (player.turn == true && card) {
-    console.log(
-      player.money +
-        " - " +
-        card.is_special_card +
-        " - " +
-        card.is_super_special_card
-    );
     //have an option to buy ticket only if it is players turn
     //player can only buy ticket on his/her own turn
     //if player lands on special_card cards, his turn is skipped
@@ -376,7 +373,6 @@ function roll_dice() {
       document.getElementsByClassName("sell")[0].style.display = "none";
       document.getElementsByClassName("buy")[0].style.display = "none";
       let roll = card.cost[dice_roll - 1];
-      console.log(typeof roll);
       if (typeof roll == "string") {
         //C - cash, P - property, A - both
         if (roll.endsWith("C")) {
@@ -396,7 +392,6 @@ function roll_dice() {
       } else {
         player.money = player.money - roll;
       }
-      console.log(player.money);
       return;
     } else if (card.owner === undefined) {
       let buy_button = document.getElementsByClassName("buy")[0];
@@ -418,7 +413,6 @@ let bank_money = (150000 * nop) / 2;
 document.addEventListener("keypress", (event) => {
   if (event.keyCode === 13) {
     roll_dice();
-    console.log("dice was rolled!");
   }
 });
 // prevent page reload
