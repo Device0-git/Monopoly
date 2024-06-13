@@ -2,17 +2,21 @@ class CityCard {
   constructor(
     city,
     cost,
-    rentForGuestHouse,
-    rentForPrivateVilla,
-    rentForHotel,
-    owner
+    rent_for_guest_house,
+    rent_for_private_villa,
+    rent_for_hotel,
+    owner,
+    is_special_card,
+    is_super_special_card
   ) {
     this.city = city;
     this.cost = cost;
-    this.rentForGuestHouse = rentForGuestHouse;
-    this.rentForPrivateVilla = rentForPrivateVilla;
-    this.rentForHotel = rentForHotel;
+    this.rent_for_guest_house = rent_for_guest_house;
+    this.rent_for_private_villa = rent_for_private_villa;
+    this.rent_for_hotel = rent_for_hotel;
     this.owner = owner;
+    this.is_special_card = is_special_card;
+    this.is_super_special_card = is_super_special_card;
   }
 }
 
@@ -43,6 +47,79 @@ const all_cards = [
   new CityCard("B.E.S.T.", 22000, 1000, 3000, 7000),
   new CityCard("Indigo", 22000, 1000, 3000, 7000),
   new CityCard("Boat", 22000, 1000, 3000, 7000),
+  //special_card CARDS - Turn is lost and automatic transaction happens
+  new CityCard("Jail", -200, undefined, undefined, undefined, undefined, true),
+  new CityCard("Club", 100, undefined, undefined, undefined, undefined, true),
+  new CityCard(
+    "Resthouse",
+    0,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    true
+  ),
+  new CityCard(
+    "Start",
+    10000,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    true
+  ),
+  //SUPER special_card CARDS - dice roll determines cost to player
+  new CityCard(
+    "Tax", /* All tax goes to the bank */
+    [
+      "10%", /* Income Tax: 10% of starting cash to simulate regular earnings taxation. */
+      "5",  /* Property Tax: 5% of total property value to simulate real estate taxation. */
+      10000, /* Luxury Tax: A flat rate applied to players for owning high-value assets, ensuring wealthier players contribute more. */
+      5000,  /* Service Tax: A flat rate to simulate the cost of public services and utilities. */
+      "2",  /* Wealth Tax: 2% of total assets (cash + property value) to ensure a fair contribution from players with significant wealth. */
+      7500   /* Emergency Tax: A flat rate for special circumstances such as unforeseen events, ensuring players have to strategize for unexpected costs. */
+    ],
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    true,
+    true
+  ),
+  new CityCard(
+    "Chance",
+    [
+      -2000,   /* Received a bonus for good performance. */
+      3000,  /* Fine for violating traffic rules. */
+      -5000,   /* Inheritance from a distant relative. */
+      1500,  /* Medical expenses. */
+      -1000,   /* Won a small lottery prize. */
+      2000   /* Car repair costs. */
+    ],
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    true,
+    true
+  ),
+  new CityCard(
+    "Service",
+    [
+      1000,   /* Paid for a cleaning service. */
+      1500,   /* Internet subscription fee. */
+      2000,   /* Car wash service fee. */
+      2500,   /* Landscaping service payment. */
+      3000,   /* House maintenance service fee. */
+      3500    /* Security service payment. */
+    ],
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    true,
+    true
+  ),
 ];
 
 class Player {
@@ -116,108 +193,42 @@ let create_players = (number_of_players) => {
   return res;
 };
 
-let nop = get_number_of_players();
-let players = create_players(nop);
-// let nop = 7;
+// let nop = get_number_of_players();
+// let players = create_players(nop);
 
 //dummy players for debugging
-// let players = [
-//   {
-//     color: "Red",
-//     debt: 0,
-//     lost: false,
-//     money: 150000,
-//     name: "Nancy",
-//     owned_cards: [],
-//     payments_skipped: 0,
-//     position: 1,
-//     turn: false,
-//   },
-//   {
-//     color: "Orange",
-//     debt: 0,
-//     lost: false,
-//     money: 150000,
-//     name: "Bhai",
-//     owned_cards: [],
-//     payments_skipped: 0,
-//     position: 1,
-//     turn: false,
-//   },
-//   {
-//     color: "Yellow",
-//     debt: 0,
-//     lost: false,
-//     money: 150000,
-//     name: "Somnath",
-//     owned_cards: [],
-//     payments_skipped: 0,
-//     position: 1,
-//     turn: false,
-//   },
-//   {
-//     color: "Green",
-//     debt: 0,
-//     lost: false,
-//     money: 150000,
-//     name: "Rutwik",
-//     owned_cards: [],
-//     payments_skipped: 0,
-//     position: 1,
-//     turn: false,
-//   },
-//   {
-//     color: "Blue",
-//     debt: 0,
-//     lost: false,
-//     money: 150000,
-//     name: "Nandini",
-//     owned_cards: [],
-//     payments_skipped: 0,
-//     position: 1,
-//     turn: false,
-//   },
-//   {
-//     color: "Indigo",
-//     debt: 0,
-//     lost: false,
-//     money: 150000,
-//     name: "Shakti",
-//     owned_cards: [],
-//     payments_skipped: 0,
-//     position: 1,
-//     turn: false,
-//   },
-//   {
-//     color: "Violet",
-//     debt: 0,
-//     lost: false,
-//     money: 150000,
-//     name: "Shivam",
-//     owned_cards: [],
-//     payments_skipped: 0,
-//     position: 1,
-//     turn: false,
-//   },
-// ];
+let nop = 7;
+let players = [
+  new Player("Nancy", "Red"),
+  new Player("Bhai", "Orange"),
+  new Player("Somnath", "Yellow"),
+  new Player("Rutwik", "Green"),
+  new Player("Nandini", "Blue"),
+  new Player("Shakti", "Indigo"),
+  new Player("Shivam", "Violet"),
+];
 
 //Initiate players at start
 players.forEach((player) => {
   let p = document.createElement("div");
   let color = player.color.toLowerCase();
   p.style.backgroundColor = color;
+  //add appropriate classes for players
   p.classList.add("spaces", "player");
   p.id = color;
-  let targetEleLen = document.getElementById(player.position).children.length;
-  let targetEle = document.getElementById(player.position).children[
-    targetEleLen - 1
+  //init player at start
+  let target_element_length = document.getElementById(player.position).children
+    .length;
+  let target_element = document.getElementById(player.position).children[
+    target_element_length - 1
   ];
-  targetEle.appendChild(p);
+  target_element.appendChild(p);
 });
 //game goes on as dice is rolled
 let i = 0;
 let prev_index = i - 1;
 function roll_dice() {
+  // keeping player turns in bounds
   if (i + 1 > players.length) {
     i = 0;
     prev_index = players.length - 1;
@@ -228,27 +239,33 @@ function roll_dice() {
     i = 0;
     prev_index = players.length - 1;
   }
+  //stopping previous players turn and starting turn for next player
   player.turn = true;
   player = players[prev_index];
   player.turn = false;
   player = players[i];
   i++;
+  //dice rolls
   let inc = Math.floor(Math.random() * 6) + 1;
   // let inc = 1; //for debugging
-  let newpos = player.position + inc;
-  if (newpos > 36) {
-    newpos = newpos - 36;
+  let new_position = player.position + inc;
+  //player comes full circle on board
+  if (new_position > 36) {
+    new_position = new_position - 36;
   }
-  player.position = newpos;
+  player.position = new_position;
+  //getting the card current player is on
   let current_card = document.getElementById(player.position);
   console.log(current_card.innerText);
-  let targetEleLen = document.getElementById(player.position).children.length;
-  let targetEle = document.getElementById(player.position).children[
-    targetEleLen - 1
+  //getting inner container of spaces the cards occupy
+  let target_element_length = document.getElementById(player.position).children
+    .length;
+  let target_element = document.getElementById(player.position).children[
+    target_element_length - 1
   ];
   let color = player.color.toLowerCase();
   let p = document.getElementById(color);
-  targetEle.appendChild(p);
+  target_element.appendChild(p);
   function card_is_available(text) {
     let res;
     for (let i = 0; i < all_cards.length; i++) {
@@ -260,12 +277,27 @@ function roll_dice() {
     }
     return res;
   }
-  let cia = card_is_available(current_card.innerText);
-  if (player.turn == true && cia) {
-    let card_cost = cia.cost;
+  let card = card_is_available(current_card.innerText);
+  if (player.turn == true && card) {
+    console.log(card);
+    let card_cost = card.cost;
+    console.log(
+      player.money +
+        " - " +
+        card_cost +
+        " - " +
+        card.is_special_card +
+        " - " +
+        card.is_super_special_card
+    );
     //have an option to buy ticket only if it is players turn
     //player can only buy ticket on his/her own turn
-    // player.buy_card(cia, card_cost);
+    //if player lands on special_card cards, his turn is skipped
+    //he has no other option but to do the task he's supposed to
+    // player.buy_card(card, card_cost);
+    if (player.debt > 0) {
+      document.getElementsByClassName("payback")[0].style.display = "block";
+    }
   }
 }
 
@@ -273,5 +305,8 @@ let button = document.getElementsByClassName("dice");
 let bank_money = (150000 * nop) / 2;
 
 document.addEventListener("keypress", (event) => {
-  if (event.keyCode === 13) roll_dice();
+  if (event.keyCode === 13) {
+    roll_dice();
+    console.log("dice was rolled!");
+  }
 });
