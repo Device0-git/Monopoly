@@ -140,7 +140,8 @@ class Player {
     owner.money = owner.money + card.rent_for_guest_house;
   }
   buy_card(card) {
-    if (card.owner === undefined) {
+    console.log(card);
+    if (!card.owner) {
       let money = card.cost;
       if (this.money - money < 0) {
         alert("You're poor, take loan from the bank or sell your belongings.");
@@ -148,7 +149,9 @@ class Player {
       this.money = this.money - money;
       this.owned_cards.push(card);
       card.owner = this.name;
-    } else {
+    } else if (this.name === card.owner) {
+      console.log("You own the card!");
+    } else if (card.owner) {
       alert(
         card.owner + " owns the card, you can buy it when they want to sell it!"
       );
@@ -335,11 +338,6 @@ function roll_dice() {
   //getting the card name current player is on
   let card = get_card(current_card_text);
   if (player.turn == true && card) {
-    //have an option to buy ticket only if it is players turn
-    //player can only buy ticket on his/her own turn
-    //if player lands on special_card cards, his turn is skipped
-    //he has no other option but to do the task he's supposed to
-    // player.buy_card(card, card_cost);
     if (player.debt > 0) {
       document.getElementsByClassName("payback")[0].style.display = "block";
     }
@@ -378,7 +376,7 @@ function roll_dice() {
       let buy_button = document.getElementsByClassName("buy")[0];
       buy_button.style.display = "block";
       buy_button.addEventListener("click", () => {
-        player.buy_card(get_card(current_card_text));
+        if (player.turn) player.buy_card(get_card(current_card_text));
       });
     } else {
       let owned_card = get_card(current_card_text);
