@@ -251,6 +251,7 @@ players.forEach((player) => {
   ];
   target_element.appendChild(p);
 });
+
 //game goes on as dice is rolled
 let i = 0;
 let prev_index = i - 1;
@@ -276,13 +277,22 @@ function roll_dice() {
   let dice_roll = Math.floor(Math.random() * 6) + 1;
   // let dice_roll = 1; //for debugging
   let new_position = player.position + dice_roll;
+  let old_position = player.position;
   //player comes full circle on board
   if (new_position > 36) {
     new_position = new_position - 36;
   }
   player.position = new_position;
-  let current_card = document.getElementById(player.position);
+  let current_card = document.getElementById(new_position);
+  let prev_card = document.getElementById(old_position);
+  const corners = { 1: "Start", 10: "Jail", 19: "Club", 28: "Restroom" };
   let current_card_text = current_card.innerText;
+  let prev_card_text = prev_card.innerText;
+  if (corners[old_position]) {
+    prev_card_text = corners[old_position];
+  } else if (corners[new_position]) {
+    current_card_text = corners[new_position];
+  }
   //getting inner container of spaces the cards occupy
   let target_element_length = document.getElementById(player.position).children
     .length;
@@ -292,6 +302,16 @@ function roll_dice() {
   let color = player.color.toLowerCase();
   let p = document.getElementById(color);
   target_element.appendChild(p);
+  raise_a_toast(
+    player.name +
+      " rolled a " +
+      dice_roll +
+      " and went from " +
+      prev_card_text +
+      " to " +
+      current_card_text,
+      player.color
+  );
   //getting the card name
   if ([1, 10, 19, 28].includes(player.position)) {
     document.getElementsByClassName("payback")[0].style.display = "none";
@@ -388,7 +408,7 @@ function roll_dice() {
 
 let button = document.getElementsByClassName("dice");
 let bank_money = (150000 * nop) / 2;
-
+//rolling dice on ENTER
 document.addEventListener("keypress", (event) => {
   if (event.keyCode === 13) {
     roll_dice();
@@ -398,3 +418,13 @@ document.addEventListener("keypress", (event) => {
 // window.addEventListener("beforeunload", function (event) {
 //   event.preventDefault();
 // });
+//adding bread to toast
+function raise_a_toast(message, color) {
+  const target = document.getElementsByClassName("toast")[0];
+  const toast = document.createElement("div");
+  toast.classList.add("bread");
+  toast.style.backgroundColor = color;
+  toast.textContent = message;
+  target.appendChild(toast);
+  target.scrollBy(0, -99999);
+}

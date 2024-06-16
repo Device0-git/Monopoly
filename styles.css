@@ -223,7 +223,7 @@ body {
   aspect-ratio: 1/1;
   background-color: whitesmoke;
   border-radius: 10px;
-  left: calc(100% - var(--space-height) / 2);
+  right: 1vh;
 }
 .dice::before {
   width: 100%;
@@ -233,8 +233,8 @@ body {
   justify-content: center;
   content: "Dice";
 }
-/* style for header */
-.header {
+/* style for footer */
+.footer {
   position: absolute;
   display: flex;
   flex-flow: row nowrap;
@@ -273,4 +273,21 @@ body {
 }
 .payback::before {
   content: "Payback";
+}
+.toast {
+  position: absolute;
+  display: flex;
+  flex-flow: column-reverse nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+  width: 50%;
+  top: 15%;
+  left: 48%;
+  overflow: auto;
+}
+.bread{
+  padding: 1%;
+  border-radius: 999px;
+  margin: 1%;
 }
