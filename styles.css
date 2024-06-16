@@ -279,15 +279,50 @@ body {
   display: flex;
   flex-flow: column-reverse nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   height: 70%;
   width: 50%;
   top: 15%;
-  left: 48%;
-  overflow: auto;
+  left: 100vh;
+  overflow-x: auto;
 }
-.bread{
+.temp{
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+}
+.bread {
   padding: 1%;
-  border-radius: 999px;
   margin: 1%;
+  border-radius: 999px;
+}
+.type {
+  padding: 1%;
+  margin: 1%;
+  margin-right: 2%;
+}
+.temp .type::before{
+  padding: 25%;
+  width: 100%;
+  height: 100%;
+}
+.temp .roll::before{
+  content: "Roll";
+  background-color: skyblue;
+}
+.temp .buy::before{
+  content: "Buy";
+  background-color: green;
+}
+.temp .sell::before{
+  content: "Sell";
+  background-color: red;
+}
+.temp .tax::before{
+  content: "Tax";
+  background-color: purple;
+}
+.temp .rent::before{
+  content: "Rent";
+  background-color: yellow;
 }

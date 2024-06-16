@@ -1,3 +1,11 @@
+/* Tasks - 
+      1. fix the fact that after a player goes onto many blocks and then
+      buys 1, a toast is roased by his name that he bought all the cards that
+      he previously visited
+      2. fix toast by adding more things to buy, sell, rent methods in Player
+      to support raising a toast without a problem
+*/
+
 class CityCard {
   constructor(
     city,
@@ -72,12 +80,12 @@ const all_cards = [
   new CityCard(
     "Tax" /* All tax goes to the bank */,
     [
-      "10C" /* Income Tax: 10% of starting cash to simulate regular earnings taxation. */,
-      "5P" /* Property Tax: 5% of total property value to simulate real estate taxation. */,
-      10000 /* Luxury Tax: A flat rate applied to players for owning high-value assets, ensuring wealthier players contribute more. */,
-      5000 /* Service Tax: A flat rate to simulate the cost of public services and utilities. */,
-      "2A" /* Wealth Tax: 2% of total assets (cash + property value) to ensure a fair contribution from players with significant wealth. */,
-      7500 /* Emergency Tax: A flat rate for special circumstances such as unforeseen events, ensuring players have to strategize for unexpected costs. */,
+      ["10C", "Income Tax: 10%"],
+      ["5P", "Property Tax: 5%"],
+      [10000, "Luxury Tax"],
+      [5000, "Service Tax"],
+      ["2A", "Wealth Tax: 2%"],
+      [7500, "Emergency Tax"],
     ],
     undefined,
     undefined,
@@ -89,11 +97,12 @@ const all_cards = [
   new CityCard(
     "Chance",
     [
-      -2000 /* Received a bonus for good performance. */,
-      3000 /* Fine for violating traffic rules. */,
-      -5000 /* Inheritance from a distant relative. */,
-      1500 /* Medical expenses. */, -1000 /* Won a small lottery prize. */,
-      2000 /* Car repair costs. */,
+      [-2000, "Received a bonus for good performance."],
+      [3000, "Fine for violating traffic rules."],
+      [-5000, "Inheritance from a distant relative."],
+      [1500, "Medical expenses."],
+      [-1000, "Won a small lottery prize."],
+      [2000, "Car repair costs."],
     ],
     undefined,
     undefined,
@@ -105,11 +114,12 @@ const all_cards = [
   new CityCard(
     "Service",
     [
-      1000 /* Paid for a cleaning service. */,
-      1500 /* Internet subscription fee. */, 2000 /* Car wash service fee. */,
-      2500 /* Landscaping service payment. */,
-      3000 /* House maintenance service fee. */,
-      3500 /* Security service payment. */,
+      [1000, "Paid for a cleaning service."],
+      [1500, "Internet subscription fee."],
+      [2000, "Car wash service fee."],
+      [2500, "Landscaping service payment."],
+      [3000, "House maintenance service fee."],
+      [3500, "Security service payment."],
     ],
     undefined,
     undefined,
@@ -135,26 +145,44 @@ class Player {
     this.name = name;
     this.color = color;
   }
-  pay_rent(card, owner) {
-    this.money = this.money - card.rent_for_guest_house;
-    owner.money = owner.money + card.rent_for_guest_house;
+  pay_rent(current_card_text) {
+    let owned_card = get_card(current_card_text);
+    let owned_by_player = get_player(owned_card.owner);
+    this.money = this.money - owned_card.rent_for_guest_house;
+    owned_by_player.money =
+      owned_by_player.money + owned_card.rent_for_guest_house;
+    raise_a_toast(
+      this.name +
+        " paid " +
+        owned_card.rent_for_guest_house +
+        " to " +
+        owned_by_player.name +
+        " for " +
+        current_card_text,
+      this.color,
+      "rent"
+    );
   }
-  buy_card(card) {
-    console.log(card);
+  buy_card(current_card_text) {
+    const card = get_card(current_card_text);
     if (!card.owner) {
       let money = card.cost;
       if (this.money - money < 0) {
         alert("You're poor, take loan from the bank or sell your belongings.");
+        return;
       }
       this.money = this.money - money;
       this.owned_cards.push(card);
       card.owner = this.name;
-    } else if (this.name === card.owner) {
-      console.log("You own the card!");
-    } else if (card.owner) {
-      alert(
-        card.owner + " owns the card, you can buy it when they want to sell it!"
+      raise_a_toast(
+        this.name + " bought " + current_card_text,
+        this.color,
+        "buy"
       );
+    } else if (this.name === card.owner) {
+      alert(this.name + " already own " + card.city + "!");
+    } else if (card.owner) {
+      alert(card.owner + " owns the card, buy it when they want to sell it!");
     }
   }
   sell_card() {
@@ -310,7 +338,8 @@ function roll_dice() {
       prev_card_text +
       " to " +
       current_card_text,
-      player.color
+    player.color,
+    "roll"
   );
   //getting the card name
   if ([1, 10, 19, 28].includes(player.position)) {
@@ -331,30 +360,6 @@ function roll_dice() {
     }
     return;
   }
-  //getting card for current player
-  function get_card(text) {
-    let res;
-    for (let i = 0; i < all_cards.length; i++) {
-      let card = all_cards[i];
-      if (card.city == text) {
-        res = card;
-        break;
-      }
-    }
-    return res;
-  }
-  //getting player for current card
-  function get_player(owner_name) {
-    let res;
-    for (let i = 0; i < players.length; i++) {
-      let player = players[i];
-      if (player.name == owner_name) {
-        res = player;
-        break;
-      }
-    }
-    return res;
-  }
   //getting the card name current player is on
   let card = get_card(current_card_text);
   if (player.turn == true && card) {
@@ -371,8 +376,10 @@ function roll_dice() {
       document.getElementsByClassName("payback")[0].style.display = "none";
       document.getElementsByClassName("sell")[0].style.display = "none";
       document.getElementsByClassName("buy")[0].style.display = "none";
-      let roll = card.cost[dice_roll - 1];
+      let roll = card.cost[dice_roll - 1][0];
+      let message = card.cost[dice_roll - 1][1];
       if (typeof roll == "string") {
+        raise_a_toast(player.name + " paid " + message, player.color, "tax");
         //C - cash, P - property, A - both
         if (roll.endsWith("C")) {
           player.money =
@@ -390,18 +397,24 @@ function roll_dice() {
         }
       } else {
         player.money = player.money - roll;
+        raise_a_toast(
+          message + " of " + roll + " paid by " + player.name,
+          player.color,
+          "tax"
+        );
       }
       return;
-    } else if (card.owner === undefined) {
+    } else if (player.turn && card.owner === undefined) {
       let buy_button = document.getElementsByClassName("buy")[0];
       buy_button.style.display = "block";
       buy_button.addEventListener("click", () => {
-        if (player.turn) player.buy_card(get_card(current_card_text));
+        if (player.turn) {
+          player.buy_card(current_card_text);
+        }
       });
     } else {
-      let owned_card = get_card(current_card_text);
-      let owned_by_player = get_player(owned_card.owner);
-      player.pay_rent(owned_card, owned_by_player);
+      document.getElementsByClassName("buy")[0].style.display = "none";
+      player.pay_rent(current_card_text);
     }
   }
 }
@@ -417,14 +430,47 @@ document.addEventListener("keypress", (event) => {
 // prevent page reload
 // window.addEventListener("beforeunload", function (event) {
 //   event.preventDefault();
+//   event.returnValue = "";
 // });
 //adding bread to toast
-function raise_a_toast(message, color) {
-  const target = document.getElementsByClassName("toast")[0];
-  const toast = document.createElement("div");
-  toast.classList.add("bread");
-  toast.style.backgroundColor = color;
-  toast.textContent = message;
-  target.appendChild(toast);
-  target.scrollBy(0, -99999);
+function raise_a_toast(message, color, thing) {
+  const toast = document.getElementsByClassName("toast")[0];
+  const temp = document.createElement("div");
+  const type = document.createElement("div");
+  const bread = document.createElement("div");
+  temp.classList.add("temp");
+  type.classList.add("type", thing);
+  bread.classList.add("bread");
+  bread.style.backgroundColor = color;
+  bread.textContent = message;
+  toast.appendChild(temp);
+  temp.appendChild(type);
+  temp.appendChild(bread);
+  toast.scrollBy(0, -99999);
+}
+
+//getting card for current player
+function get_card(text) {
+  let res;
+  for (let i = 0; i < all_cards.length; i++) {
+    let card = all_cards[i];
+    if (card.city == text) {
+      res = card;
+      break;
+    }
+  }
+  return res;
+}
+
+//getting player for current card
+function get_player(owner_name) {
+  let res;
+  for (let i = 0; i < players.length; i++) {
+    let player = players[i];
+    if (player.name == owner_name) {
+      res = player;
+      break;
+    }
+  }
+  return res;
 }
