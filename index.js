@@ -163,7 +163,7 @@ class Player {
       "rent"
     );
   }
-  buy_card(card) {
+  buy_card(card, current_card_text) {
     if (card.owner === undefined) {
       let money = card.cost;
       if (this.money - money < 0) {
@@ -174,25 +174,49 @@ class Player {
       this.owned_cards.push(card);
       card.owner = this.name;
       raise_a_toast(
-        this.name + " bought " + current_card_text,
+        this.name + " bought " + current_card_text + " for " + money,
         this.color,
         "buy"
       );
     } else if (this.name === card.owner) {
-      alert(this.name + " already own " + card.city + "!");
+      alert(this.name + " already owns " + card.city + "!");
     } else if (card.owner) {
       alert(card.owner + " owns the card, buy it when they want to sell it!");
     }
   }
   sell_card() {
-    let player = prompt("Who do you want to sell to?");
-    let card = prompt("What card do you want to sell?");
+    let other_player_name = prompt("Who do you want to sell to?");
+    let other_player = get_player(other_player_name);
+    let card_name = prompt("What card do you want to sell?");
+    let card = get_card(card_name);
     let money = prompt("How much money do they pay?");
-    this.money = this.money + money;
-    player.owned_cards = this.owned_cards.splice(
-      this.owned_cards.findIndex(card),
-      1
-    );
+    let deal = confirm("Deal?");
+    if (other_player && this.owned_cards.includes(card)) {
+      this.money += money;
+      other_player.owned_cards = this.owned_cards.splice(
+        this.owned_cards.findIndex((curr, index) => {
+          if (curr === card) return index;
+        }),
+        1
+      );
+      other_player.money -= money;
+      raise_a_toast(
+        this.name +
+          " sold " +
+          card_name +
+          " to " +
+          other_player_name +
+          " for " +
+          money,
+        this.color,
+        "buy"
+      );
+    } else if (!other_player) {
+      alert("Player you want to sell to doesn't exist!");
+    } else if (!deal) {
+    } else {
+      alert("You don't own " + card_name);
+    }
   }
   borrow_money() {
     if (this.debt > bank_money / nop) {
@@ -345,41 +369,59 @@ function roll_dice() {
     document.getElementsByClassName("payback")[0].style.display = "none";
     document.getElementsByClassName("sell")[0].style.display = "none";
     document.getElementsByClassName("buy")[0].style.display = "none";
+    let amount;
     if (player.position == 1) {
-      player.money = player.money + 10000;
+      amount = 10000;
+      player.money = player.money + amount;
+      raise_a_toast(
+        player.name + " was rewarded for a new start with ₹" + amount,
+        player.color,
+        "start"
+      );
       //play mosh mosh video
     } else if (player.position == 10) {
-      player.money = player.money - 200;
+      amount = 200;
+      player.money = player.money - amount;
+      raise_a_toast(
+        player.name + " bribed the jailer with ₹" + amount,
+        player.color,
+        "jail"
+      );
       //play za warudo video
     } else if (player.position == 19) {
-      player.money = player.money + 100;
+      amount = 100;
+      player.money = player.money + amount;
+      raise_a_toast(
+        player.name + ' "found" ₹' + amount + " at the club",
+        player.color,
+        "club"
+      );
       //play tomodachi dayo video
     } else if (player.position == 28) {
+      raise_a_toast(player.name + " rested", player.color, "rest");
       //play phonk video
     }
-    return;
+    return [player, current_card_text];
   }
   //getting the card name current player is on
   let card = get_card(current_card_text);
   if (player.turn == true && card) {
-    //have an option to buy ticket only if it is players turn
-    //player can only buy ticket on his/her own turn
-    //if player lands on special_card cards, his turn is skipped
-    //he has no other option but to do the task he's supposed to
-    // player.buy_card(card, card_cost);
     if (player.debt > 0) {
       document.getElementsByClassName("payback")[0].style.display = "block";
+    } else {
+      document.getElementsByClassName("payback")[0].style.display = "none";
     }
     if (player.owned_cards.length > 0) {
       document.getElementsByClassName("sell")[0].style.display = "block";
+    } else {
+      document.getElementsByClassName("sell")[0].style.display = "none";
     }
     if (player.money <= 75000) {
       document.getElementsByClassName("borrow")[0].style.display = "block";
+    } else {
+      document.getElementsByClassName("borrow")[0].style.display = "none";
     }
     if (card.is_super_special_card) {
-      document.getElementsByClassName("payback")[0].style.display = "none";
-      document.getElementsByClassName("sell")[0].style.display = "none";
-      document.getElementsByClassName("buy")[0].style.display = "none";
       let roll = card.cost[dice_roll - 1][0];
       let message = card.cost[dice_roll - 1][1];
       if (typeof roll == "string") {
@@ -407,15 +449,11 @@ function roll_dice() {
           "tax"
         );
       }
-      return;
+      return [player, current_card_text];
     } else if (player.turn && card.owner === undefined) {
       let buy_button = document.getElementsByClassName("buy")[0];
       buy_button.style.display = "block";
-      buy_button.addEventListener("click", () => {
-        if (player.turn) {
-          player.buy_card(current_card_text);
-        }
-      });
+      return [player, current_card_text];
     } else {
       document.getElementsByClassName("buy")[0].style.display = "none";
       player.pay_rent(current_card_text);
@@ -423,12 +461,48 @@ function roll_dice() {
   }
 }
 
-let button = document.getElementsByClassName("dice");
+let button = document.getElementsByClassName("dice")[0];
 let bank_money = (150000 * nop) / 2;
+//getting return value from dice roll
+let res;
+//interactable buttons
+let buy_button = document.getElementsByClassName("buy")[0];
+let sell_button = document.getElementsByClassName("sell")[0];
+let borrow_button = document.getElementsByClassName("borrow")[0];
+let payback_button = document.getElementsByClassName("payback")[0];
+//button interactions
+buy_button.addEventListener("click", () => {
+  let [player, current_card_text] = res;
+  if (player.turn) {
+    player.buy_card(get_card(current_card_text), current_card_text);
+  }
+});
+sell_button.addEventListener("click", () => {
+  let [player] = res;
+  if (player.turn) {
+    player.sell_card();
+  }
+});
+borrow_button.addEventListener("click", () => {
+  let [player, current_card_text] = res;
+  if (player.turn) {
+    player.buy_card(get_card(current_card_text), current_card_text);
+  }
+});
+payback_button.addEventListener("click", () => {
+  let [player, current_card_text] = res;
+  if (player.turn) {
+    player.buy_card(get_card(current_card_text), current_card_text);
+  }
+});
+//rolling dice on dice click
+button.addEventListener("click", () => {
+  res = roll_dice();
+});
 //rolling dice on ENTER
 document.addEventListener("keypress", (event) => {
   if (event.keyCode === 13) {
-    roll_dice();
+    res = roll_dice();
   }
 });
 // prevent page reload
@@ -458,7 +532,7 @@ function get_card(text) {
   let res;
   for (let i = 0; i < all_cards.length; i++) {
     let card = all_cards[i];
-    if (card.city == text) {
+    if (card.city.toLowerCase() == text.toLowerCase()) {
       res = card;
       break;
     }
@@ -471,7 +545,7 @@ function get_player(owner_name) {
   let res;
   for (let i = 0; i < players.length; i++) {
     let player = players[i];
-    if (player.name == owner_name) {
+    if (player.name.toLowerCase() == owner_name.toLowerCase()) {
       res = player;
       break;
     }

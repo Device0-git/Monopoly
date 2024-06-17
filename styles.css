@@ -300,6 +300,8 @@ body {
   padding: 1%;
   margin: 1%;
   margin-right: 2%;
+  max-width: 5%;
+  flex-grow: 1;
 }
 .temp .type::before{
   padding: 25%;
@@ -310,12 +312,28 @@ body {
   content: "Roll";
   background-color: skyblue;
 }
+.temp .rest::before{
+  content: "Rest";
+  background-color: skyblue;
+}
 .temp .buy::before{
   content: "Buy";
   background-color: green;
 }
+.temp .start::before{
+  content: "Start";
+  background-color: green;
+}
+.temp .club::before{
+  content: "Club";
+  background-color: green;
+}
 .temp .sell::before{
   content: "Sell";
+  background-color: red;
+}
+.temp .jail::before{
+  content: "Jail";
   background-color: red;
 }
 .temp .tax::before{
