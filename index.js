@@ -10,18 +10,16 @@ class CityCard {
   constructor(
     city,
     cost,
-    rent_for_guest_house,
-    rent_for_private_villa,
-    rent_for_hotel,
+    rent,
+    order,
     owner,
     is_special_card,
     is_super_special_card
   ) {
     this.city = city;
     this.cost = cost;
-    this.rent_for_guest_house = rent_for_guest_house;
-    this.rent_for_private_villa = rent_for_private_villa;
-    this.rent_for_hotel = rent_for_hotel;
+    this.rent = rent;
+    this.order = order;
     this.owner = owner;
     this.is_special_card = is_special_card;
     this.is_super_special_card = is_super_special_card;
@@ -29,53 +27,37 @@ class CityCard {
 }
 
 const all_cards = [
-  new CityCard("Mumbai", 60000, 5000, 15000, 45000),
-  new CityCard("Delhi", 58000, 4800, 14500, 43500),
-  new CityCard("Chennai", 53000, 4200, 12600, 38500),
-  new CityCard("Kolkata", 51000, 4000, 12000, 36000),
-  new CityCard("Pune", 48000, 3600, 10800, 32500),
-  new CityCard("Surat", 46000, 3400, 10200, 30500),
-  new CityCard("Jaipur", 45000, 3300, 10000, 29500),
-  new CityCard("Lucknow", 43000, 3100, 9400, 28500),
-  new CityCard("Kanpur", 42000, 3000, 9000, 27000),
-  new CityCard("Nagpur", 41000, 2900, 8700, 26000),
-  new CityCard("Patna", 40000, 2800, 8400, 25000),
-  new CityCard("Indore", 39000, 2700, 8100, 24000),
-  new CityCard("Bhopal", 37000, 2500, 7500, 22000),
-  new CityCard("Kochi", 35000, 2300, 6900, 20000),
-  new CityCard("Goa", 31000, 1900, 5700, 16000),
-  new CityCard("Nashik", 30000, 1800, 5400, 15000),
-  new CityCard("Agra", 26000, 1400, 4200, 11000),
-  new CityCard("Amritsar", 24000, 1200, 3600, 9000),
-  new CityCard("Shimla", 23000, 1100, 3300, 8000),
-  new CityCard("Margao", 22000, 1000, 3000, 7000),
-  new CityCard("Water", 22000, 1000, 3000, 7000),
-  new CityCard("Railway", 22000, 1000, 3000, 7000),
-  new CityCard("Elec Co.", 22000, 1000, 3000, 7000),
-  new CityCard("B.E.S.T.", 22000, 1000, 3000, 7000),
-  new CityCard("Indigo", 22000, 1000, 3000, 7000),
-  new CityCard("Boat", 22000, 1000, 3000, 7000),
+  new CityCard("Mumbai", 60000, [5000, 15000, 45000], 0),
+  new CityCard("Delhi", 58000, [4800, 14500, 43500], 0),
+  new CityCard("Chennai", 53000, [4200, 12600, 38500], 0),
+  new CityCard("Kolkata", 51000, [4000, 12000, 36000], 0),
+  new CityCard("Pune", 48000, [3600, 10800, 32500], 0),
+  new CityCard("Surat", 46000, [3400, 10200, 30500], 0),
+  new CityCard("Jaipur", 45000, [3300, 10000, 29500], 0),
+  new CityCard("Lucknow", 43000, [3100, 9400, 28500], 0),
+  new CityCard("Kanpur", 42000, [3000, 9000, 27000], 0),
+  new CityCard("Nagpur", 41000, [2900, 8700, 26000], 0),
+  new CityCard("Patna", 40000, [2800, 8400, 25000], 0),
+  new CityCard("Indore", 39000, [2700, 8100, 24000], 0),
+  new CityCard("Bhopal", 37000, [2500, 7500, 22000], 0),
+  new CityCard("Kochi", 35000, [2300, 6900, 20000], 0),
+  new CityCard("Goa", 31000, [1900, 5700, 16000], 0),
+  new CityCard("Nashik", 30000, [1800, 5400, 15000], 0),
+  new CityCard("Agra", 26000, [1400, 4200, 11000], 0),
+  new CityCard("Amritsar", 24000, [1200, 3600, 9000], 0),
+  new CityCard("Shimla", 23000, [1100, 3300, 8000], 0),
+  new CityCard("Margao", 22000, [1000, 3000, 7000], 0),
+  new CityCard("Water", 22000, [1000, 3000, 7000], 0),
+  new CityCard("Railway", 22000, [1000, 3000, 7000], 0),
+  new CityCard("Elec Co.", 22000, [1000, 3000, 7000], 0),
+  new CityCard("B.E.S.T.", 22000, [1000, 3000, 7000], 0),
+  new CityCard("Indigo", 22000, [1000, 3000, 7000], 0),
+  new CityCard("Boat", 22000, [1000, 3000, 7000], 0),
   //SPECIAL CARDS - Turn is lost and automatic transaction happens
-  new CityCard("Jail", 200, undefined, undefined, undefined, undefined, true),
-  new CityCard("Club", -100, undefined, undefined, undefined, undefined, true),
-  new CityCard(
-    "Resthouse",
-    0,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    true
-  ),
-  new CityCard(
-    "Start",
-    -10000,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    true
-  ),
+  new CityCard("Jail", 200, undefined, undefined, undefined, true),
+  new CityCard("Club", -100, undefined, undefined, undefined, true),
+  new CityCard("Resthouse", 0, undefined, undefined, undefined, true),
+  new CityCard("Start", -10000, undefined, undefined, undefined, true),
   //SUPER SPECIAL CARDS - dice roll determines cost to player
   new CityCard(
     "Tax" /* All tax goes to the bank */,
@@ -87,7 +69,6 @@ const all_cards = [
       ["2A", "Wealth Tax: 2%"],
       [7500, "Emergency Tax"],
     ],
-    undefined,
     undefined,
     undefined,
     undefined,
@@ -107,7 +88,6 @@ const all_cards = [
     undefined,
     undefined,
     undefined,
-    undefined,
     true,
     true
   ),
@@ -121,7 +101,6 @@ const all_cards = [
       [3000, "House maintenance service fee."],
       [3500, "Security service payment."],
     ],
-    undefined,
     undefined,
     undefined,
     undefined,
@@ -148,13 +127,12 @@ class Player {
   pay_rent(current_card_text) {
     let owned_card = get_card(current_card_text);
     let owned_by_player = get_player(owned_card.owner);
-    this.money = this.money - owned_card.rent_for_guest_house;
-    owned_by_player.money =
-      owned_by_player.money + owned_card.rent_for_guest_house;
+    this.money = this.money - owned_card.rent[card.order];
+    owned_by_player.money = owned_by_player.money + owned_card.rent[card.order];
     raise_a_toast(
       this.name +
         " paid " +
-        owned_card.rent_for_guest_house +
+        owned_card.rent[card.order] +
         " to " +
         owned_by_player.name +
         " for " +
@@ -179,7 +157,26 @@ class Player {
         "buy"
       );
     } else if (this.name === card.owner) {
-      alert(this.name + " already owns " + card.city + "!");
+      let money = card.cost;
+      if (this.money - money < 0) {
+        alert("You're poor, take loan from the bank or sell your belongings.");
+        return;
+      }
+      this.money = this.money - money;
+      this.owned_cards.push(card);
+      card.owner = this.name;
+      card.order = card.order + 1;
+      raise_a_toast(
+        this.name +
+          " upgraded " +
+          current_card_text +
+          " into " +
+          order[card.order] +
+          " for " +
+          money,
+        this.color,
+        "upgrade"
+      );
     } else if (card.owner) {
       alert(card.owner + " owns the card, buy it when they want to sell it!");
     }
@@ -247,7 +244,7 @@ class Player {
     }
   }
 }
-
+let order = { 0: "guest house", 1: "private villa", 2: "hotel" };
 let get_number_of_players = () => {
   let nop = Number(prompt("How many number of players are there?"));
   if (nop) return nop;
@@ -366,9 +363,10 @@ function roll_dice() {
   );
   //getting the card name
   if ([1, 10, 19, 28].includes(player.position)) {
-    document.getElementsByClassName("payback")[0].style.display = "none";
-    document.getElementsByClassName("sell")[0].style.display = "none";
-    document.getElementsByClassName("buy")[0].style.display = "none";
+    upgrade_button.style.display = "none";
+    payback_button.style.display = "none";
+    sell_button.style.display = "none";
+    buy_button.style.display = "none";
     let amount;
     if (player.position == 1) {
       amount = 10000;
@@ -407,19 +405,19 @@ function roll_dice() {
   let card = get_card(current_card_text);
   if (player.turn == true && card) {
     if (player.debt > 0) {
-      document.getElementsByClassName("payback")[0].style.display = "block";
+      payback_button.style.display = "block";
     } else {
-      document.getElementsByClassName("payback")[0].style.display = "none";
+      payback_button.style.display = "none";
     }
     if (player.owned_cards.length > 0) {
-      document.getElementsByClassName("sell")[0].style.display = "block";
+      sell_button.style.display = "block";
     } else {
-      document.getElementsByClassName("sell")[0].style.display = "none";
+      sell_button.style.display = "none";
     }
     if (player.money <= 75000) {
-      document.getElementsByClassName("borrow")[0].style.display = "block";
+      borrow_button.style.display = "block";
     } else {
-      document.getElementsByClassName("borrow")[0].style.display = "none";
+      borrow_button.style.display = "none";
     }
     if (card.is_super_special_card) {
       let roll = card.cost[dice_roll - 1][0];
@@ -451,27 +449,36 @@ function roll_dice() {
       }
       return [player, current_card_text];
     } else if (player.turn && card.owner === undefined) {
-      let buy_button = document.getElementsByClassName("buy")[0];
       buy_button.style.display = "block";
       return [player, current_card_text];
+    } else if (player.turn && card.owner === player.name) {
+      upgrade_button.style.display = "block";
+      return [player, current_card_text];
     } else {
-      document.getElementsByClassName("buy")[0].style.display = "none";
+      buy_button.style.display = "none";
       player.pay_rent(current_card_text);
     }
   }
 }
 
-let button = document.getElementsByClassName("dice")[0];
+let dice_button = document.getElementsByClassName("dice")[0];
 let bank_money = (150000 * nop) / 2;
 //getting return value from dice roll
 let res;
 //interactable buttons
-let buy_button = document.getElementsByClassName("buy")[0];
-let sell_button = document.getElementsByClassName("sell")[0];
-let borrow_button = document.getElementsByClassName("borrow")[0];
-let payback_button = document.getElementsByClassName("payback")[0];
+var buy_button = document.getElementsByClassName("buy")[0];
+var sell_button = document.getElementsByClassName("sell")[0];
+var borrow_button = document.getElementsByClassName("borrow")[0];
+var payback_button = document.getElementsByClassName("payback")[0];
+var upgrade_button = document.getElementsByClassName("upgrade")[0];
 //button interactions
 buy_button.addEventListener("click", () => {
+  let [player, current_card_text] = res;
+  if (player.turn) {
+    player.buy_card(get_card(current_card_text), current_card_text);
+  }
+});
+upgrade_button.addEventListener("click", () => {
   let [player, current_card_text] = res;
   if (player.turn) {
     player.buy_card(get_card(current_card_text), current_card_text);
@@ -484,19 +491,13 @@ sell_button.addEventListener("click", () => {
   }
 });
 borrow_button.addEventListener("click", () => {
-  let [player, current_card_text] = res;
-  if (player.turn) {
-    player.buy_card(get_card(current_card_text), current_card_text);
-  }
+  //implement borrow logic
 });
 payback_button.addEventListener("click", () => {
-  let [player, current_card_text] = res;
-  if (player.turn) {
-    player.buy_card(get_card(current_card_text), current_card_text);
-  }
+  //implement payback logic
 });
 //rolling dice on dice click
-button.addEventListener("click", () => {
+dice_button.addEventListener("click", () => {
   res = roll_dice();
 });
 //rolling dice on ENTER

@@ -274,6 +274,9 @@ body {
 .payback::before {
   content: "Payback";
 }
+.upgrade::before {
+  content: "Upgrade";
+}
 .toast {
   position: absolute;
   display: flex;
@@ -318,6 +321,10 @@ body {
 }
 .temp .buy::before {
   content: "Buy";
+  background-color: green;
+}
+.temp .upgrade::before {
+  content: "Upgrade";
   background-color: green;
 }
 .temp .start::before {
