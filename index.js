@@ -127,12 +127,13 @@ class Player {
   pay_rent(current_card_text) {
     let owned_card = get_card(current_card_text);
     let owned_by_player = get_player(owned_card.owner);
-    this.money = this.money - owned_card.rent[card.order];
-    owned_by_player.money = owned_by_player.money + owned_card.rent[card.order];
+    this.money = this.money - owned_card.rent[owned_card.order];
+    owned_by_player.money =
+      owned_by_player.money + owned_card.rent[owned_card.order];
     raise_a_toast(
       this.name +
         " paid " +
-        owned_card.rent[card.order] +
+        owned_card.rent[owned_card.order] +
         " to " +
         owned_by_player.name +
         " for " +
