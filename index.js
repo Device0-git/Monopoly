@@ -191,7 +191,7 @@ class Player {
     let card = get_card(card_name);
     let money = prompt("How much money do they pay?");
     let deal = confirm("Deal?");
-    if (other_player && this.owned_cards.includes(card)) {
+    if (deal && other_player && this.owned_cards.includes(card)) {
       this.money += money;
       other_player.owned_cards = this.owned_cards.splice(
         this.owned_cards.findIndex((curr, index) => {
@@ -209,7 +209,7 @@ class Player {
           " for " +
           money,
         this.color,
-        "buy"
+        "sell"
       );
     } else if (!other_player) {
       alert("Player you want to sell to doesn't exist!");

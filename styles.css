@@ -246,7 +246,7 @@ body {
   top: calc(100% - var(--space-height));
 }
 /* style for button elements */
-.button{
+.button {
   display: none;
   height: 50%;
   width: auto;
@@ -255,23 +255,23 @@ body {
   border-radius: 999em;
   background-color: aqua;
 }
-.button::before{
+.button::before {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.buy::before{
+.buy::before {
   content: "Buy";
 }
-.borrow::before{
+.borrow::before {
   content: "Borrow";
 }
-.sell::before{
+.sell::before {
   content: "Sell";
 }
-.payback::before{
+.payback::before {
   content: "Payback";
 }
 .toast {
@@ -286,7 +286,7 @@ body {
   left: 100vh;
   overflow-x: auto;
 }
-.temp{
+.temp {
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
@@ -303,44 +303,44 @@ body {
   max-width: 5%;
   flex-grow: 1;
 }
-.temp .type::before{
+.temp .type::before {
   padding: 25%;
   width: 100%;
   height: 100%;
 }
-.temp .roll::before{
+.temp .roll::before {
   content: "Roll";
   background-color: skyblue;
 }
-.temp .rest::before{
+.temp .rest::before {
   content: "Rest";
   background-color: skyblue;
 }
-.temp .buy::before{
+.temp .buy::before {
   content: "Buy";
   background-color: green;
 }
-.temp .start::before{
+.temp .start::before {
   content: "Start";
   background-color: green;
 }
-.temp .club::before{
+.temp .club::before {
   content: "Club";
   background-color: green;
 }
-.temp .sell::before{
+.temp .sell::before {
   content: "Sell";
   background-color: red;
 }
-.temp .jail::before{
+.temp .jail::before {
   content: "Jail";
   background-color: red;
 }
-.temp .tax::before{
+.temp .tax::before {
   content: "Tax";
   background-color: purple;
 }
-.temp .rent::before{
+.temp .rent::before {
   content: "Rent";
   background-color: yellow;
 }
