@@ -163,9 +163,8 @@ class Player {
       "rent"
     );
   }
-  buy_card(current_card_text) {
-    const card = get_card(current_card_text);
-    if (!card.owner) {
+  buy_card(card) {
+    if (card.owner === undefined) {
       let money = card.cost;
       if (this.money - money < 0) {
         alert("You're poor, take loan from the bank or sell your belongings.");
@@ -363,6 +362,11 @@ function roll_dice() {
   //getting the card name current player is on
   let card = get_card(current_card_text);
   if (player.turn == true && card) {
+    //have an option to buy ticket only if it is players turn
+    //player can only buy ticket on his/her own turn
+    //if player lands on special_card cards, his turn is skipped
+    //he has no other option but to do the task he's supposed to
+    // player.buy_card(card, card_cost);
     if (player.debt > 0) {
       document.getElementsByClassName("payback")[0].style.display = "block";
     }
