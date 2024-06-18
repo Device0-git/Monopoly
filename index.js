@@ -110,7 +110,7 @@ const all_cards = [
 ];
 
 class Player {
-  money = 250000;
+  money = 150000;
   owned_cards = [];
   property_value = this.owned_cards.reduce((acc, card) => {
     acc += card.cost;
@@ -237,11 +237,11 @@ class Player {
       alert(`You only owe ${this.debt} to the bank, Don't pay more!`);
     else if (this.debt === 0) alert("Can't pay if you don't owe!");
     //give 3 extra days if money offered is greater than half owed
-    else if (this.debt / money >= 2) {
+    else if (this.debt / money <= 2) {
       this.debt = this.debt - money;
       this.money = this.money - money;
       bank_money = bank_money + money;
-      this.payments_skipped -= 3;
+      this.payments_skipped = 2;
       alert(`You get 3 more days but still owe ${this.debt} to the bank`);
     } else {
       this.debt = this.debt - money;
@@ -289,6 +289,7 @@ let players = [
   new Player("Shakti", "Indigo"),
   new Player("Shivam", "Violet"),
 ];
+
 //show/update details of players
 function show_details(player, color) {
   let people = document.createElement("div");
@@ -411,6 +412,13 @@ function roll_dice() {
     player.color,
     "roll"
   );
+  while (player.turn && player.payments_skipped >= 5) {
+    let money = Number(prompt("It's time to pay back?"));
+    if (money > (player.debt * 3) / 4) {
+      player.payback(money);
+      update_details(player);
+    } else alert("Pay more or pay more!");
+  }
   //getting the card name
   if ([1, 10, 19, 28].includes(player.position)) {
     upgrade_button.style.display = "none";
@@ -458,6 +466,7 @@ function roll_dice() {
   let card = get_card(current_card_text);
   if (player.turn == true && card) {
     if (player.debt > 0) {
+      player.payments_skipped += 1;
       payback_button.style.display = "block";
     } else {
       payback_button.style.display = "none";
@@ -513,6 +522,7 @@ function roll_dice() {
       buy_button.style.display = "none";
       player.pay_rent(current_card_text);
       update_details(player);
+      return [player, current_card_text];
     }
   }
 }
@@ -552,7 +562,7 @@ sell_button.addEventListener("click", () => {
 borrow_button.addEventListener("click", () => {
   let [player] = res;
   if (player.turn && player.debt < bank_money / nop) {
-    let money = prompt("How much money do you need?");
+    let money = Number(prompt("How much money do you need?"));
     player.borrow_money(money);
     update_details(player);
   }
@@ -560,7 +570,7 @@ borrow_button.addEventListener("click", () => {
 payback_button.addEventListener("click", () => {
   let [player] = res;
   if (player.turn) {
-    let money = prompt("How much money can you pay back?");
+    let money = Number(prompt("How much money can you pay back?"));
     player.payback(money);
     update_details(player);
   }
