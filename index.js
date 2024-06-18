@@ -275,20 +275,20 @@ let create_players = (number_of_players) => {
   return res;
 };
 
-// let nop = get_number_of_players();
-// let players = create_players(nop);
+let nop = get_number_of_players();
+let players = create_players(nop);
 
 //dummy players for debugging
-let nop = 7;
-let players = [
-  new Player("Nancy", "Red"),
-  new Player("Bhai", "Orange"),
-  new Player("Somnath", "Yellow"),
-  new Player("Rutwik", "Green"),
-  new Player("Nandini", "Blue"),
-  new Player("Shakti", "Indigo"),
-  new Player("Shivam", "Violet"),
-];
+// let nop = 7;
+// let players = [
+//   new Player("Nancy", "Red"),
+//   new Player("Bhai", "Orange"),
+//   new Player("Somnath", "Yellow"),
+//   new Player("Rutwik", "Green"),
+//   new Player("Nandini", "Blue"),
+//   new Player("Shakti", "Indigo"),
+//   new Player("Shivam", "Violet"),
+// ];
 
 //show/update details of players
 function show_details(player, color) {
