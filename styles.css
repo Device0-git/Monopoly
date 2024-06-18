@@ -351,3 +351,19 @@ body {
   content: "Rent";
   background-color: yellow;
 }
+.details {
+  position: absolute;
+  display: flex;
+  height: calc(100vh - var(--space-height) * 2);
+  width: calc(100vh - var(--space-height) + 1%);
+  top: var(--space-height);
+  left: calc(var(--space-height) / 2 - 0.5%);
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+.people {
+  flex-grow: 1;
+  background-color: skyblue;
+  overflow: auto;
+}

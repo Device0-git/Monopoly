@@ -110,7 +110,7 @@ const all_cards = [
 ];
 
 class Player {
-  money = 150000;
+  money = 250000;
   owned_cards = [];
   property_value = this.owned_cards.reduce((acc, card) => {
     acc += card.cost;
@@ -289,7 +289,48 @@ let players = [
   new Player("Shakti", "Indigo"),
   new Player("Shivam", "Violet"),
 ];
-
+//show/update details of players
+function show_details(player, color) {
+  let people = document.createElement("div");
+  let details = document.getElementsByClassName("details")[0];
+  people.style.backgroundColor = color;
+  people.classList.add("people", player.name);
+  let player_details = () => {
+    let res = [];
+    for (let props in player) {
+      res.push(props + "=>" + player[props]);
+    }
+    return res;
+  };
+  let [_1, cards, _3, _4, _5, _6, _7, _8, _9, _10] = player_details(player);
+  let sep = " | ";
+  let res = _1 + sep + cards + sep + _3 + sep + _4 + sep + _5 + sep + _9;
+  people.innerText = res;
+  details.appendChild(people);
+}
+//update player details
+function update_details(player) {
+  let people = document.getElementsByClassName(player.name)[0];
+  let player_details = () => {
+    let res = [];
+    for (let props in player) {
+      if (props == "owned_cards") {
+        let result = [];
+        for (let pps in player[props]) {
+          result.push(player[props][pps].city);
+        }
+        res.push(props + "=>" + result);
+      } else {
+        res.push(props + "=>" + player[props]);
+      }
+    }
+    return res;
+  };
+  let [_1, cards, _3, _4, _5, _6, _7, _8, _9, _10] = player_details(player);
+  let sep = " | ";
+  let res = _1 + sep + cards + sep + _3 + sep + _4 + sep + _5 + sep + _9;
+  people.innerText = res;
+}
 //Initiate players at start
 players.forEach((player) => {
   let p = document.createElement("div");
@@ -304,6 +345,7 @@ players.forEach((player) => {
   let target_element = document.getElementById(player.position).children[
     target_element_length - 1
   ];
+  show_details(player, color);
   target_element.appendChild(p);
 });
 
@@ -356,6 +398,7 @@ function roll_dice() {
   ];
   let color = player.color.toLowerCase();
   let p = document.getElementById(color);
+  update_details(player, color);
   target_element.appendChild(p);
   raise_a_toast(
     player.name +
@@ -383,6 +426,7 @@ function roll_dice() {
         player.color,
         "start"
       );
+      update_details(player);
       //play mosh mosh video
     } else if (player.position == 10) {
       amount = 200;
@@ -392,6 +436,7 @@ function roll_dice() {
         player.color,
         "jail"
       );
+      update_details(player);
       //play za warudo video
     } else if (player.position == 19) {
       amount = 100;
@@ -401,6 +446,7 @@ function roll_dice() {
         player.color,
         "club"
       );
+      update_details(player);
       //play tomodachi dayo video
     } else if (player.position == 28) {
       raise_a_toast(player.name + " rested", player.color, "rest");
@@ -455,6 +501,7 @@ function roll_dice() {
           "tax"
         );
       }
+      update_details(player);
       return [player, current_card_text];
     } else if (player.turn && card.owner === undefined) {
       buy_button.style.display = "block";
@@ -465,13 +512,13 @@ function roll_dice() {
     } else {
       buy_button.style.display = "none";
       player.pay_rent(current_card_text);
-      return [player, current_card_text];
+      update_details(player);
     }
   }
 }
 
 let dice_button = document.getElementsByClassName("dice")[0];
-let bank_money = (150000 * nop) / 2;
+let bank_money = (players[0].money * nop) / 2;
 //getting return value from dice roll
 let res;
 //interactable buttons
@@ -485,18 +532,21 @@ buy_button.addEventListener("click", () => {
   let [player, current_card_text] = res;
   if (player.turn) {
     player.buy_card(get_card(current_card_text), current_card_text);
+    update_details(player);
   }
 });
 upgrade_button.addEventListener("click", () => {
   let [player, current_card_text] = res;
   if (player.turn) {
     player.buy_card(get_card(current_card_text), current_card_text);
+    update_details(player);
   }
 });
 sell_button.addEventListener("click", () => {
   let [player] = res;
   if (player.turn) {
     player.sell_card();
+    update_details(player);
   }
 });
 borrow_button.addEventListener("click", () => {
@@ -504,6 +554,7 @@ borrow_button.addEventListener("click", () => {
   if (player.turn && player.debt < bank_money / nop) {
     let money = prompt("How much money do you need?");
     player.borrow_money(money);
+    update_details(player);
   }
 });
 payback_button.addEventListener("click", () => {
@@ -511,6 +562,7 @@ payback_button.addEventListener("click", () => {
   if (player.turn) {
     let money = prompt("How much money can you pay back?");
     player.payback(money);
+    update_details(player);
   }
 });
 //rolling dice on dice click
