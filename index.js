@@ -127,6 +127,10 @@ class Player {
   pay_rent(current_card_text) {
     let owned_card = get_card(current_card_text);
     let owned_by_player = get_player(owned_card.owner);
+    if (this.money - owned_card.rent[owned_card.order] < 0) {
+      alert("Take a loan or sell your belongings, you're poor!");
+      return;
+    }
     this.money = this.money - owned_card.rent[owned_card.order];
     owned_by_player.money =
       owned_by_player.money + owned_card.rent[owned_card.order];
@@ -159,25 +163,27 @@ class Player {
       );
     } else if (this.name === card.owner) {
       let money = card.cost;
+      let deal = confirm("Do you want to upgrde this card in your posession?");
       if (this.money - money < 0) {
         alert("You're poor, take loan from the bank or sell your belongings.");
         return;
+      } else if (deal) {
+        this.money = this.money - money;
+        this.owned_cards.push(card);
+        card.owner = this.name;
+        card.order = card.order + 1;
+        raise_a_toast(
+          this.name +
+            " upgraded " +
+            current_card_text +
+            " into " +
+            order[card.order] +
+            " for " +
+            money,
+          this.color,
+          "upgrade"
+        );
       }
-      this.money = this.money - money;
-      this.owned_cards.push(card);
-      card.owner = this.name;
-      card.order = card.order + 1;
-      raise_a_toast(
-        this.name +
-          " upgraded " +
-          current_card_text +
-          " into " +
-          order[card.order] +
-          " for " +
-          money,
-        this.color,
-        "upgrade"
-      );
     } else if (card.owner) {
       alert(card.owner + " owns the card, buy it when they want to sell it!");
     }
@@ -197,6 +203,7 @@ class Player {
         }),
         1
       );
+      card.owner = other_player_name;
       other_player.money -= money;
       raise_a_toast(
         this.name +
@@ -216,21 +223,20 @@ class Player {
       alert("You don't own " + card_name);
     }
   }
-  borrow_money() {
+  borrow_money(money) {
     if (this.debt > bank_money / nop) {
       alert("You're at your borrow limit!");
       return;
     }
-    let money = prompt("How much money do you need?");
     this.debt = this.debt + money;
     this.money = this.money + money;
     bank_money = bank_money - money;
   }
-  payback() {
-    let money = prompt("How much money can you pay back?");
+  payback(money) {
     if (this.debt - money < 0)
       alert(`You only owe ${this.debt} to the bank, Don't pay more!`);
     else if (this.debt === 0) alert("Can't pay if you don't owe!");
+    //give 3 extra days if money offered is greater than half owed
     else if (this.debt / money >= 2) {
       this.debt = this.debt - money;
       this.money = this.money - money;
@@ -421,6 +427,7 @@ function roll_dice() {
       borrow_button.style.display = "none";
     }
     if (card.is_super_special_card) {
+      buy_button.style.display = "none";
       let roll = card.cost[dice_roll - 1][0];
       let message = card.cost[dice_roll - 1][1];
       if (typeof roll == "string") {
@@ -458,6 +465,7 @@ function roll_dice() {
     } else {
       buy_button.style.display = "none";
       player.pay_rent(current_card_text);
+      return [player, current_card_text];
     }
   }
 }
@@ -492,10 +500,18 @@ sell_button.addEventListener("click", () => {
   }
 });
 borrow_button.addEventListener("click", () => {
-  //implement borrow logic
+  let [player] = res;
+  if (player.turn && player.debt < bank_money / nop) {
+    let money = prompt("How much money do you need?");
+    player.borrow_money(money);
+  }
 });
 payback_button.addEventListener("click", () => {
-  //implement payback logic
+  let [player] = res;
+  if (player.turn) {
+    let money = prompt("How much money can you pay back?");
+    player.payback(money);
+  }
 });
 //rolling dice on dice click
 dice_button.addEventListener("click", () => {

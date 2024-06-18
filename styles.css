@@ -324,7 +324,7 @@ body {
   background-color: green;
 }
 .temp .upgrade::before {
-  content: "Upgrade";
+  content: "Up";
   background-color: green;
 }
 .temp .start::before {
